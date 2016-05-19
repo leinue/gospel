@@ -8,4 +8,4 @@ git add .
 git commit -a -m "$msg"
 git push -u origin master
 #sync
-ssh root@poimoe.com 'cd /var/www/gospel && git pull'
+ssh root@poimoe.com 'cd /var/www/gospely && git pull'
