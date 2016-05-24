@@ -1,7 +1,7 @@
 module.exports = {
+
 	auth: function() {
-
-		return $http.get('/someurl');
-
+      	var resource = $resource('someItem{/id}');
+		return resource.get({id: 1});
 	}
 }

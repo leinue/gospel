@@ -10,7 +10,7 @@ Vue.use(Keen);
 Vue.use(require('vue-resource'));
 
 //初始化AJAX头
-Vue.http.options.root = '/root';
+Vue.http.options.root = 'http://localhost';
 Vue.http.headers.common['Authorization'] = 'Basic YXBpOnBhc3N3b3Jk';
 
 //加载AJAX Service库

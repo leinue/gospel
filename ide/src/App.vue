@@ -20,7 +20,7 @@
       <a href="https://github.com/vuejs/vuex/" target="_blank">vuex</a> for state management.
     </p>
   </div>
-    <ui-button color="primary">Github</ui-button>
+    <ui-button @click="testAjax()" color="primary">Github</ui-button>
 </template>
 
 <script>
@@ -29,6 +29,12 @@ import Hello from './components/Hello'
 export default {
   components: {
     Hello
+  },
+
+  methods: {
+    testAjax() {
+      $Model.AuthService.auth();
+    }
   }
 }
 </script>
