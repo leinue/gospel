@@ -2,7 +2,7 @@
 
   <div id="app">
     <header>
-      <h1>Hello App header</h1>
+      <h1>Gospel IDE Frontend</h1>
       <p>
         <a v-link="{ path: '/404' }">Go to 404</a>
       </p>
@@ -11,7 +11,7 @@
       <router-view></router-view>
     </section>
     <footer>
-      <ui-button color="primary">Github</ui-button>
+      <ui-button color="primary">Google Material Design</ui-button>
     </footer>
   </div>
 

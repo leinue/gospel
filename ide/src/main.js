@@ -10,7 +10,6 @@ import routerConfig from './routers.js';
 
 //加载keen-ui
 Vue.use(Keen);
-
 //----------------------------初始化AJAX----------------------------
 
 //加载AJAX请求库
