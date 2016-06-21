@@ -7,7 +7,7 @@
           <a href="gogole.com">Hey</a>
       </ui-tab>
 
-      <ui-tab header="代码编辑">
+      <ui-tab header="代码编辑" @selected="startCoding()">
           Authors
       </ui-tab>
   </ui-tabs>
@@ -16,6 +16,8 @@
 
 <script>
 
+import { incrementCounter } from '../vuex/actions.js';
+
 export default {
   data () {
     return {
@@ -23,6 +25,20 @@ export default {
   },
 
   ready() {
+  },
+
+  vuex: {
+    actions: {
+      increment: incrementCounter
+    }
+  },
+
+  methods: {
+    startCoding: function() {
+
+
+
+    }
   }
 }
 

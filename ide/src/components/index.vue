@@ -1,6 +1,6 @@
 <template>
 
-  <aside class="sidebar">
+  <aside class="sidebar" v-hide="isCoding">
     <controls-panel></controls-panel>
   </aside>
 
@@ -14,11 +14,13 @@
 
 import controlsPanel from './controls.vue';
 import designPanel from './design.vue';
+import store from '../vuex.js';
 
 export default {
   data () {
     return {
-      msg: 'Hello Index!'
+      msg: 'Hello Index!',
+      isCoding: false
     }
   },
 
@@ -29,7 +31,9 @@ export default {
   components: {
     controlsPanel,
     designPanel
-  }
+  },
+
+  store
 }
 
 </script>

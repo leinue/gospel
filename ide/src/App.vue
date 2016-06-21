@@ -23,11 +23,27 @@
                 <span style="top: 17px;position: fixed;">Gospel</span>
               </div>
             </div>
+
             <div slot="actions">
+
                 <ui-icon-button
-                    type="clear" color="white" icon="more_vert" has-dropdown-menu
-                    :menu-options="mainMenuOptions" dropdown-position="bottom right"
+                    type="clear" color="white" icon="play_circle_outline" v-el:debug
                 ></ui-icon-button>
+
+                <ui-tooltip :trigger="$els.debug" content="启动调试"></ui-tooltip>
+
+                <ui-icon-button
+                    type="clear" color="white" icon="stop_circle_outline" v-el:stop-debug
+                ></ui-icon-button>
+
+                <ui-tooltip :trigger="$els.stopDebug" content="停止调试"></ui-tooltip>
+
+                <ui-icon-button
+                    type="clear" color="white" icon="view_modules" has-dropdown-menu :show-menu-secondary-text="true"
+                    :menu-options="formMenu" dropdown-position="bottom right" v-el:forms
+                ></ui-icon-button>
+
+                <ui-tooltip :trigger="$els.forms" content="窗口"></ui-tooltip>
 
                 <ui-icon-button
                     type="clear" color="white" icon="more_vert" has-dropdown-menu
@@ -105,6 +121,16 @@ export default {
           text: '删除项目 ',
           icon: 'delete',
           secondaryText: 'Del'
+      }],
+
+      formMenu: [{
+        id: 'controls',
+        text: '控件面板',
+        secondaryText: 'O'
+      }, {
+        id: 'console',
+        text: '控制台',
+        secondaryText: 'O'
       }]
     }
   }

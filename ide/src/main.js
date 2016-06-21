@@ -7,9 +7,13 @@ import Service from './models/index.js';
 //加载vue-router
 import VueRouter from 'vue-router';
 import routerConfig from './routers.js';
+import Vuex from 'vuex';
+import stores from './vuex/stores.js';
 
 //加载keen-ui
 Vue.use(Keen);
+Vue.use(Vuex);
+
 //----------------------------初始化AJAX----------------------------
 
 //加载AJAX请求库
