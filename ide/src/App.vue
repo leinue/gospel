@@ -11,8 +11,24 @@
             show-brand 
             :loading="isLoading" 
             preloader-top
-            @nav-icon-clicked="setLoading">
+            :hide-nav-icon="true"
+            @nav-icon-clicked="setLoading"
+            >
+            <div slot="brand">
+              <div class="ui-toolbar-title">
+                <ui-icon-button
+                    type="clear" color="white" icon="menu"
+                    v-el:trigger-b
+                ></ui-icon-button>
+                <span style="top: 17px;position: fixed;">Gospel</span>
+              </div>
+            </div>
             <div slot="actions">
+                <ui-icon-button
+                    type="clear" color="white" icon="more_vert" has-dropdown-menu
+                    :menu-options="mainMenuOptions" dropdown-position="bottom right"
+                ></ui-icon-button>
+
                 <ui-icon-button
                     type="clear" color="white" icon="more_vert" has-dropdown-menu
                     :menu-options="menu" dropdown-position="bottom right"
@@ -20,8 +36,8 @@
             </div>
         </ui-toolbar>
       </div>
-      <ui-menu :options="menuOptions" :trigger="$els.triggerA" show-icons show-secondary-text></ui-menu>
-      <ui-button @click="setLoading()" color="primary">Google Material Design</ui-button>
+      <ui-menu :options="mainMenuOptions" @option-selected="triggerMainMenuSelected()" :trigger="$els.triggerB" show-icons show-secondary-text></ui-menu>
+      <!-- <ui-button @click="setLoading()" color="primary">Google Material Design</ui-button> -->
     </header>
     <section>
       <router-view></router-view>
@@ -35,14 +51,13 @@
 <script>
 
 export default {
-  components: {
-
-  },
-
   methods: {
 
     setLoading: function() {
+      var btn = this.$els.triggerB;
+    },
 
+    triggerMainMenuSelected: function() {
     }
 
   },
@@ -73,31 +88,24 @@ export default {
           text: '帮助'
       }],
 
-      menuOptions: [{
+      mainMenuOptions: [{
           id: 'edit',
-          text: 'Edit',
+          text: '新建项目',
           icon: 'edit',
-          secondaryText: 'Ctrl+E'
+          secondaryText: 'Ctrl+N'
       }, {
           id: 'duplicate',
-          text: 'Duplicate',
+          text: '保存项目',
           icon: 'content_copy',
-          secondaryText: 'Ctrl+D'
-      }, {
-          id: 'share',
-          text: 'Share',
-          icon: 'share',
-          secondaryText: 'Ctrl+Shift+S',
-          disabled: true
-      }, {
+          secondaryText: 'Ctrl+S'
+      },{
           type: 'divider'
       }, {
           id: 'delete',
-          text: 'Delete',
+          text: '删除项目 ',
           icon: 'delete',
           secondaryText: 'Del'
       }]
-
     }
   }
 }
@@ -131,13 +139,36 @@ body {
 }
 
 .photo-cover {
-    background-position: 50%;
-    background-size: cover;
+  background-position: 50%;
+  background-size: cover;
 }
 
 .ui-menu-item:not(.divider) {
   width: auto!important;
   max-width: 100%!important;
+}
+
+.sidebar {
+  width: 272px;
+  height: 100vh;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  overflow-y: auto;
+  position: fixed;
+  background-color: #fff;
+  box-shadow: 0 0 3px rgba(0,0,0,.35),0 2px 2px rgba(0,0,0,.2);
+  z-index: 5;
+}
+
+.ui-collapsible-header .ui-icon {
+  margin-top: -20px;
+}
+
+.toolbar {
+  height: 100%;
+  /*line-height: 100%;*/
+
 }
 
 </style>

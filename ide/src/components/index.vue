@@ -1,10 +1,20 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-  </div>
+
+  <aside class="sidebar">
+    <controls-panel></controls-panel>
+  </aside>
+
+  <section class="design">
+    <design-panel></design-panel>
+  </section>
+
 </template>
 
 <script>
+
+import controlsPanel from './controls.vue';
+import designPanel from './design.vue';
+
 export default {
   data () {
     return {
@@ -14,12 +24,26 @@ export default {
 
   ready() {
     console.log('index.vue');
+  },
+
+  components: {
+    controlsPanel,
+    designPanel
   }
 }
+
 </script>
 
-<style scoped>
-h1 {
-  color: #42b983;
+<style>
+
+.design {
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin-left: 272px;
 }
+
 </style>
