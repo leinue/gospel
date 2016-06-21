@@ -2,30 +2,31 @@
 
   <div id="app">
     <header>
-
       <div class="group photo-cover photo-2">
         <ui-toolbar
-            type="clear" brand="Gospel" title="Web可视化集成编程环境" show-brand :loading="isLoading" preloader-top
-        >
+            type="colored"
+            text-color="white"
+            brand="Gospel"
+            title="Web可视化集成编程环境" 
+            show-brand 
+            :loading="isLoading" 
+            preloader-top
+            @nav-icon-clicked="setLoading">
             <div slot="actions">
                 <ui-icon-button
-                    type="clear" color="black" icon="more_vert" has-dropdown-menu
+                    type="clear" color="white" icon="more_vert" has-dropdown-menu
                     :menu-options="menu" dropdown-position="bottom right"
                 ></ui-icon-button>
             </div>
         </ui-toolbar>
       </div>
-
-      <h1>Gospel IDE Frontend</h1>
-      <p>
-        <a v-link="{ path: '/404' }">Go to 404</a>
-      </p>
+      <ui-menu :options="menuOptions" :trigger="$els.triggerA" show-icons show-secondary-text></ui-menu>
+      <ui-button @click="setLoading()" color="primary">Google Material Design</ui-button>
     </header>
     <section>
       <router-view></router-view>
     </section>
     <footer>
-      <ui-button @click="setLoading()" color="primary">Google Material Design</ui-button>
     </footer>
   </div>
 
@@ -41,7 +42,7 @@ export default {
   methods: {
 
     setLoading: function() {
-      // this.isLoading = !this.isLoading;
+
     }
 
   },
@@ -52,12 +53,15 @@ export default {
 
   data() {
     return {
+
       menu: [{
           id: 'register',
           text: '注册'
       },{
           id: 'login',
           text: '登录'
+      },{
+        type: 'divider'
       },{
           id: 'settings',
           text: '设置'
@@ -67,7 +71,33 @@ export default {
       }, {
           id: 'help',
           text: '帮助'
+      }],
+
+      menuOptions: [{
+          id: 'edit',
+          text: 'Edit',
+          icon: 'edit',
+          secondaryText: 'Ctrl+E'
+      }, {
+          id: 'duplicate',
+          text: 'Duplicate',
+          icon: 'content_copy',
+          secondaryText: 'Ctrl+D'
+      }, {
+          id: 'share',
+          text: 'Share',
+          icon: 'share',
+          secondaryText: 'Ctrl+Shift+S',
+          disabled: true
+      }, {
+          type: 'divider'
+      }, {
+          id: 'delete',
+          text: 'Delete',
+          icon: 'delete',
+          secondaryText: 'Del'
       }]
+
     }
   }
 }
@@ -87,9 +117,7 @@ body {
 
 #app {
   color: #2c3e50;
-  width: 100%;
   font-family: Source Sans Pro, Helvetica, sans-serif;
-  text-align: center;
 }
 
 #app a {
@@ -102,14 +130,14 @@ body {
   height: 100px
 }
 
-.photo-2 {
-    background-image: url("http://i.imgur.com/vFBagiE.jpg");
-}
-
 .photo-cover {
     background-position: 50%;
     background-size: cover;
-    height: 300px;
+}
+
+.ui-menu-item:not(.divider) {
+  width: auto!important;
+  max-width: 100%!important;
 }
 
 </style>
