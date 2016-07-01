@@ -8,7 +8,9 @@
       </ui-tab>
 
       <ui-tab header="代码编辑" @selected="startCoding()">
-          Authors
+
+        <div id="editor">some text</div>
+
       </ui-tab>
   </ui-tabs>
 
@@ -25,6 +27,13 @@ export default {
   },
 
   ready() {
+
+    this.$nextTick(function() {
+
+      var editor = ace.edit("editor");
+
+    });
+
   },
 
   vuex: {
@@ -36,8 +45,6 @@ export default {
   methods: {
     startCoding: function() {
 
-
-
     }
   }
 }
@@ -45,5 +52,10 @@ export default {
 </script>
 
 <style>
+
+  #editor {
+      width: 100%;
+      height: 800px;
+  }
   
 </style>
