@@ -4,10 +4,10 @@
 	<div class="form-title">
 		<h1 class="ui-modal-header-text">这是一个可以拖动的窗口</h1>
 	  	<div>
-	   		<a class="form-min" href="javascript:;" title="最小化">_</a>
-	   		<a class="form-max" href="javascript:;" title="最大化">口</a>
-	   		<a class="form-revert" href="javascript:;" title="还原">口</a>
-	   		<a class="form-close" href="javascript:;" title="关闭">x</a>
+	   		<a class="form-min" href="javascript:;" style="display:none" title="最小化"></a>
+	   		<ui-icon-button class="form-control form-revert" type="flat" style="display:none" color="default" icon="minus"></ui-icon-button>
+	   		<ui-icon-button class="form-control form-max" type="flat" color="default" icon="add"></ui-icon-button>
+	   		<ui-icon-button class="form-control form-close" type="flat" color="default" icon="close"></ui-icon-button>
 	  	</div>
 	</div>
 		<div class="form-resizeL"></div>
@@ -353,5 +353,23 @@ window.onload = window.onresize = function ()
 		left: 0;
 		bottom: 0;
 		cursor: ne-resize;
+	}
+
+	.ui-form-container {
+	    outline: none;
+	    width: 528px;
+	    margin: 0 auto;
+	    padding: 0;
+	    background-color: #fff;
+	    border-radius: 2px;
+	    box-shadow: 0 2px 8px rgba(0,0,0,.33);
+	    max-height: 100vh;
+	    max-width: 100vw;
+	    overflow-x: hidden;
+	    overflow-y: auto;
+	}
+
+	.form-control {
+		margin-top: -14px;
 	}
 </style>
