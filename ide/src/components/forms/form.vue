@@ -42,10 +42,10 @@ var get = {
     var reClass = new RegExp("(^| )" + sClass + "( |$)");
     var aElem = this.byTagName("*", oParent);
     for (var i = 0; i < aElem.length; i++) reClass.test(aElem[i].className) && aClass.push(aElem[i]);
-    return aClass
+    return aClass;
   },
   byTagName: function(elem, obj) {
-    return (obj || document).getElementsByTagName(elem)
+    return (obj || document).getElementsByTagName(elem);
   }
 };
 var dragMinWidth = 250;
@@ -63,14 +63,20 @@ function drag(oDrag, handle)
   var oClose = get.byClass("form-close", oDrag)[0];
   handle = handle || oDrag;
   handle.style.cursor = "move";
-  oDrag.style.zIndex = '65535';
 
   handle.onmousedown = function (event)
   {
     var event = event || window.event;
     disX = event.clientX - oDrag.offsetLeft;
     disY = event.clientY - oDrag.offsetTop;
-    console.log('ssssss');
+    var oForm = get.byClass('ui-form-container', oDrag.parentNode);
+
+    for (var i = 0; i < oForm.length; i++) {
+    	var currentForm = oForm[i];
+    	currentForm.style.zIndex = '65530';
+    };
+
+  	oDrag.style.zIndex = '65535';
     document.onmousemove = function (event)
     {
       var event = event || window.event;
