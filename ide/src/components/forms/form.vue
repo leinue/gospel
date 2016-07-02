@@ -1,8 +1,8 @@
 <template>
 
-<div id="form">
+<div id="form" class="ui-form-container">
 	<div class="form-title">
-		<h2>这是一个可以拖动的窗口</h2>
+		<h1 class="ui-modal-header-text">这是一个可以拖动的窗口</h1>
 	  	<div>
 	   		<a class="form-min" href="javascript:;" title="最小化">_</a>
 	   		<a class="form-max" href="javascript:;" title="最大化">口</a>
@@ -29,7 +29,6 @@
 </template>
 
 <script>
-	
 /*-------------------------- +
  获取id, class, tagName
  +-------------------------- */
@@ -201,35 +200,158 @@ window.onload = window.onresize = function ()
   oDrag.style.left = (document.documentElement.clientWidth - oDrag.offsetWidth) / 2 + "px";
   oDrag.style.top = (document.documentElement.clientHeight - oDrag.offsetHeight) / 2 + "px";
 }
-
 </script>
 
 <style>
-	#form{position:absolute;top:100px;left:100px;width:300px;height:160px;background:#e9e9e9;border:1px solid #444;border-radius:5px;box-shadow:0 1px 3px 2px #666;z-index: 65530;}
-	#form .form-title{position:relative;height:27px;margin:5px;}
-	#form .form-title h2{font-size:14px;height:27px;line-height:24px;border-bottom:1px solid #A1B4B0;}
-	#form .form-title div{position:absolute;height:19px;top:2px;right:0;}
-	#form .form-title a,a.open{float:left;width:21px;height:19px;display:block;margin-left:5px;}
-	a.open{position:absolute;top:10px;left:50%;margin-left:-10px;background-position:0 0;}
-	a.open:hover{background-position:0 -29px;}
-	#form .form-title a.form-min{background-position:-29px 0;}
-	#form .form-title a.form-min:hover{background-position:-29px -29px;}
-	#form .form-title a.form-max{background-position:-60px 0;}
-	#form .form-title a.form-max:hover{background-position:-60px -29px;}
-	#form .form-title a.form-revert{background-position:-149px 0;display:none;}
-	#form .form-title a.form-revert:hover{background-position:-149px -29px;}
-	#form .form-title a.form-close{background-position:-89px 0;}
-	#form .form-title a.form-close:hover{background-position:-89px -29px;}
-	#form .form-content{overflow:auto;margin:0 5px;}
-	#form .form-resizeBR{position:absolute;width:14px;height:14px;right:0;bottom:0;overflow:hidden;cursor:nw-resize;}
-	#form .form-resizeL,#form .form-resizeT,#form .form-resizeR,#form .form-resizeB,#form .form-resizeLT,#form .form-resizeTR,#form .form-resizeLB{position:absolute;background:#000;overflow:hidden;opacity:0;filter:alpha(opacity=0);}
-	#form .form-resizeL,#form .form-resizeR{top:0;width:5px;height:100%;cursor:w-resize;}
-	#form .form-resizeR{right:0;}
-	#form .form-resizeT,#form .form-resizeB{width:100%;height:5px;cursor:n-resize;}
-	#form .form-resizeT{top:0;}
-	#form .form-resizeB{bottom:0;}
-	#form .form-resizeLT,#form .rform-esizeTR,#form .form-resizeLB{width:8px;height:8px;background:#FF0;}
-	#form .form-resizeLT{top:0;left:0;cursor:nw-resize;}
-	#form .form-resizeTR{top:0;right:0;cursor:ne-resize;}
-	#form .form-resizeLB{left:0;bottom:0;cursor:ne-resize;}
+	#form {
+		position: absolute;
+		top: 100px;
+		left: 100px;
+		z-index: 65530;
+	}
+
+	#form .form-title {
+		position: relative;
+		height: 27px;
+		margin: 5px;
+	}
+
+	#form .form-title h1 {
+		font-size: 1em;
+		height: 27px;
+		line-height: 24px;
+		border-bottom: 1px solid rgb(238, 238, 238);
+	}
+
+	#form .form-title div {
+		position: absolute;
+		height: 19px;
+		top: 2px;
+		right: 0;
+	}
+
+	#form .form-title a,a.open {
+		float: left;
+		width: 21px;
+		height: 19px;
+		display: block;
+		margin-left: 5px;
+	}
+
+	a.open {
+		position: absolute;
+		top: 10px;
+		left: 50%;
+		margin-left: -10px;
+		background-position: 0 0;
+	}
+
+	a.open:hover {
+		background-position: 0 -29px;
+	}
+
+	#form .form-title a.form-min {
+		background-position: -29px 0;
+	}
+
+	#form .form-title a.form-min:hover {
+		background-position: -29px -29px;
+	}
+
+	#form .form-title a.form-max {
+		background-position: -60px 0;
+	}
+
+	#form .form-title a.form-max:hover {
+		background-position: -60px -29px;
+	}
+
+	#form .form-title a.form-revert {
+		background-position: -149px 0;
+		display: none;
+	}
+
+	#form .form-title a.form-revert:hover {
+		background-position: -149px -29px;
+	}
+
+	#form .form-title a.form-close {
+		background-position: -89px 0;
+	}
+
+	#form .form-title a.form-close:hover {
+		background-position: -89px -29px;
+	}
+
+	#form .form-content {
+		overflow: auto;
+		margin: 0 5px;
+	}
+
+	#form .form-resizeBR {
+		position: absolute;
+		width: 14px;
+		height: 14px;
+		right: 0;
+		bottom: 0;
+		overflow: hidden;
+		cursor: nw-resize;
+	}
+
+	#form .form-resizeL,#form .form-resizeT,#form .form-resizeR,#form .form-resizeB,#form .form-resizeLT,#form .form-resizeTR,#form .form-resizeLB {
+		position: absolute;
+		background: #000;
+		overflow: hidden;
+		opacity: 0;
+		filter: alpha(opacity=0);
+	}
+
+	#form .form-resizeL,#form .form-resizeR {
+		top: 0;
+		width: 5px;
+		height: 100%;
+		cursor: w-resize;
+	}
+
+	#form .form-resizeR {
+		right: 0;
+	}
+
+	#form .form-resizeT,#form .form-resizeB {
+		width: 100%;
+		height: 5px;
+		cursor: n-resize;
+	}
+
+	#form .form-resizeT {
+		top: 0;
+	}
+
+	#form .form-resizeB {
+		bottom: 0;
+	}
+
+	#form .form-resizeLT,#form .rform-esizeTR,#form .form-resizeLB {
+		width: 8px;
+		height: 8px;
+		background: #FF0;
+	}
+
+	#form .form-resizeLT {
+		top: 0;
+		left: 0;
+		cursor: nw-resize;
+	}
+
+	#form .form-resizeTR {
+		top: 0;
+		right: 0;
+		cursor: ne-resize;
+	}
+
+	#form .form-resizeLB {
+		left: 0;
+		bottom: 0;
+		cursor: ne-resize;
+	}
 </style>
