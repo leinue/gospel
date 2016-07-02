@@ -1,6 +1,6 @@
 <template>
 
-<div id="form" class="ui-form-container" v-bind:style="{ width: styles.width, height: styles.height }">
+<div id="{{fid}}" class="ui-form-container" v-bind:style="{ width: styles.width, height: styles.height, left: styles.left, top: styles.top}">
 	<div class="form-title">
 		<h1 class="ui-modal-header-text">
 			{{title}}
@@ -63,11 +63,14 @@ function drag(oDrag, handle)
   var oClose = get.byClass("form-close", oDrag)[0];
   handle = handle || oDrag;
   handle.style.cursor = "move";
+  oDrag.style.zIndex = '65535';
+
   handle.onmousedown = function (event)
   {
     var event = event || window.event;
     disX = event.clientX - oDrag.offsetLeft;
     disY = event.clientY - oDrag.offsetTop;
+    console.log('ssssss');
     document.onmousemove = function (event)
     {
       var event = event || window.event;
@@ -177,32 +180,6 @@ function resize(oParent, handle, isLeft, isTop, lockX, lockY)
     return false;
   }
 };
-window.onload = window.onresize = function ()
-{
-  var oDrag = document.getElementById("form");
-  var oTitle = get.byClass("form-title", oDrag)[0];
-  var oL = get.byClass("form-resizeL", oDrag)[0];
-  var oT = get.byClass("form-resizeT", oDrag)[0];
-  var oR = get.byClass("form-resizeR", oDrag)[0];
-  var oB = get.byClass("form-resizeB", oDrag)[0];
-  var oLT = get.byClass("form-resizeLT", oDrag)[0];
-  var oTR = get.byClass("form-resizeTR", oDrag)[0];
-  var oBR = get.byClass("form-resizeBR", oDrag)[0];
-  var oLB = get.byClass("form-resizeLB", oDrag)[0];
-  drag(oDrag, oTitle);
-  //四角
-  resize(oDrag, oLT, true, true, false, false);
-  resize(oDrag, oTR, false, true, false, false);
-  resize(oDrag, oBR, false, false, false, false);
-  resize(oDrag, oLB, true, false, false, false);
-  //四边
-  resize(oDrag, oL, true, false, false, true);
-  resize(oDrag, oT, false, true, true, false);
-  resize(oDrag, oR, false, false, false, true);
-  resize(oDrag, oB, false, false, true, false);
-  oDrag.style.left = (document.documentElement.clientWidth - oDrag.offsetWidth) / 2 + "px";
-  oDrag.style.top = (document.documentElement.clientHeight - oDrag.offsetHeight) / 2 + "px";
-}
 
 export default {
   data () {
@@ -212,52 +189,83 @@ export default {
 
   ready() {
 
+  	var self = this;
+
+	console.log(self.fid);
+
+  	self.$nextTick(function() {
+		var oDrag = document.getElementById(self.fid);
+		var oTitle = get.byClass("form-title", oDrag)[0];
+		var oL = get.byClass("form-resizeL", oDrag)[0];
+		var oT = get.byClass("form-resizeT", oDrag)[0];
+		var oR = get.byClass("form-resizeR", oDrag)[0];
+		var oB = get.byClass("form-resizeB", oDrag)[0];
+		var oLT = get.byClass("form-resizeLT", oDrag)[0];
+	 	var oTR = get.byClass("form-resizeTR", oDrag)[0];
+		var oBR = get.byClass("form-resizeBR", oDrag)[0];
+		var oLB = get.byClass("form-resizeLB", oDrag)[0];
+		drag(oDrag, oTitle);
+		//四角
+		resize(oDrag, oLT, true, true, false, false);
+		resize(oDrag, oTR, false, true, false, false);
+		resize(oDrag, oBR, false, false, false, false);
+		resize(oDrag, oLB, true, false, false, false);
+		//四边
+		resize(oDrag, oL, true, false, false, true);
+		resize(oDrag, oT, false, true, true, false);
+		resize(oDrag, oR, false, false, false, true);
+		resize(oDrag, oB, false, false, true, false);
+  	});
+
   },
 
+
+
   props: {
-  	title: '',
+  	title: {
+  		default: ''
+  	},
   	content: '',
   	styles: {
   		width: '250px',
-  		height: '400px'
+  		height: '400px',
+  		left: '0px',
+  		top: '56px'
+  	},
+  	fid: {
+  		default: 'ss'
   	}
   },
 
   methods: {
+
   }
 }
 
 </script>
 
 <style>
-	#form {
-		position: absolute;
-		top: 100px;
-		left: 100px;
-		z-index: 65530;
-	}
-
-	#form .form-title {
+	.ui-form-container .form-title {
 		position: relative;
 		height: 27px;
 		margin: 5px;
 	}
 
-	#form .form-title h1 {
+	.ui-form-container .form-title h1 {
 		font-size: 1em;
 		height: 27px;
 		line-height: 24px;
 		border-bottom: 1px solid rgb(238, 238, 238);
 	}
 
-	#form .form-title div {
+	.ui-form-container .form-title div {
 		position: absolute;
 		height: 19px;
 		top: 2px;
 		right: 0;
 	}
 
-	#form .form-title a,a.open {
+	.ui-form-container .form-title a,a.open {
 		float: left;
 		width: 21px;
 		height: 19px;
@@ -277,45 +285,44 @@ export default {
 		background-position: 0 -29px;
 	}
 
-	#form .form-title a.form-min {
+	.ui-form-container .form-title a.form-min {
 		background-position: -29px 0;
 	}
 
-	#form .form-title a.form-min:hover {
+	.ui-form-container .form-title a.form-min:hover {
 		background-position: -29px -29px;
 	}
 
-	#form .form-title a.form-max {
+	.ui-form-container .form-title a.form-max {
 		background-position: -60px 0;
 	}
 
-	#form .form-title a.form-max:hover {
+	.ui-form-container .form-title a.form-max:hover {
 		background-position: -60px -29px;
 	}
 
-	#form .form-title a.form-revert {
+	.ui-form-container .form-title a.form-revert {
 		background-position: -149px 0;
 		display: none;
 	}
 
-	#form .form-title a.form-revert:hover {
+	.ui-form-container .form-title a.form-revert:hover {
 		background-position: -149px -29px;
 	}
 
-	#form .form-title a.form-close {
+	.ui-form-container .form-title a.form-close {
 		background-position: -89px 0;
 	}
 
-	#form .form-title a.form-close:hover {
+	.ui-form-container .form-title a.form-close:hover {
 		background-position: -89px -29px;
 	}
 
-	#form .form-content {
+	.ui-form-container .form-content {
 		overflow: auto;
-		margin: 0 5px;
 	}
 
-	#form .form-resizeBR {
+	.ui-form-container .form-resizeBR {
 		position: absolute;
 		width: 14px;
 		height: 14px;
@@ -325,7 +332,7 @@ export default {
 		cursor: nw-resize;
 	}
 
-	#form .form-resizeL,#form .form-resizeT,#form .form-resizeR,#form .form-resizeB,#form .form-resizeLT,#form .form-resizeTR,#form .form-resizeLB {
+	.ui-form-container .form-resizeL,.ui-form-container .form-resizeT,.ui-form-container .form-resizeR,.ui-form-container .form-resizeB,.ui-form-container .form-resizeLT,.ui-form-container .form-resizeTR,.ui-form-container .form-resizeLB {
 		position: absolute;
 		background: #000;
 		overflow: hidden;
@@ -333,50 +340,50 @@ export default {
 		filter: alpha(opacity=0);
 	}
 
-	#form .form-resizeL,#form .form-resizeR {
+	.ui-form-container .form-resizeL,.ui-form-container .form-resizeR {
 		top: 0;
 		width: 5px;
 		height: 100%;
 		cursor: w-resize;
 	}
 
-	#form .form-resizeR {
+	.ui-form-container .form-resizeR {
 		right: 0;
 	}
 
-	#form .form-resizeT,#form .form-resizeB {
+	.ui-form-container .form-resizeT,.ui-form-container .form-resizeB {
 		width: 100%;
 		height: 5px;
 		cursor: n-resize;
 	}
 
-	#form .form-resizeT {
+	.ui-form-container .form-resizeT {
 		top: 0;
 	}
 
-	#form .form-resizeB {
+	.ui-form-container .form-resizeB {
 		bottom: 0;
 	}
 
-	#form .form-resizeLT,#form .rform-esizeTR,#form .form-resizeLB {
+	.ui-form-container .form-resizeLT,.ui-form-container .rform-esizeTR,.ui-form-container .form-resizeLB {
 		width: 8px;
 		height: 8px;
 		background: #FF0;
 	}
 
-	#form .form-resizeLT {
+	.ui-form-container .form-resizeLT {
 		top: 0;
 		left: 0;
 		cursor: nw-resize;
 	}
 
-	#form .form-resizeTR {
+	.ui-form-container .form-resizeTR {
 		top: 0;
 		right: 0;
 		cursor: ne-resize;
 	}
 
-	#form .form-resizeLB {
+	.ui-form-container .form-resizeLB {
 		left: 0;
 		bottom: 0;
 		cursor: ne-resize;
@@ -393,6 +400,8 @@ export default {
 	    max-width: 100vw;
 	    overflow-x: hidden;
 	    overflow-y: auto;
+		position: absolute;
+		z-index: 60000;
 	}
 
 	.form-control {

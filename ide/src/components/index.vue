@@ -1,18 +1,24 @@
 <template>
 
-  <forms v-bind:title="fuck" v-bind:content="fuckshit" v-bind:styles="styles">
+  <forms v-bind:styles="styles" fid="controls">
+    <span slot="title">控件</span>
     <div slot="content">
-      <p>ssss</p>
+      <controls-panel></controls-panel>
     </div>
   </forms>
 
-  <aside class="sidebar" v-hide="isCoding">
-    <controls-panel></controls-panel>
+<!--   <aside class="sidebar" v-hide="isCoding">
   </aside>
+ -->
 
-  <section class="design">
-    <design-panel></design-panel>
-  </section>
+  <forms v-bind:styles="designStyles" fid="form">
+    <span slot="title">设计与编码</span>
+    <div slot="content">
+      <section class="design">
+        <design-panel></design-panel>  
+      </section>
+    </div>
+  </forms>
 
 </template>
 
@@ -32,14 +38,23 @@ export default {
       fuckshit: 'fuckshi111t',
 
       styles: {
-        width: '250px',
-        height: '500px'
+        width: '272px',
+        height: 'calc(100% - 56px)',
+        left: '0px',
+        top: '56px'
+      },
+
+      designStyles: {
+        left: '273px',
+        top: '56px',
+        width: 'calc(100% - 274px)',
+        height: 'calc(100% - 56px)'
       }
     }
   },
 
   ready() {
-    console.log('index.vue');
+    console.log(document.width);
   },
 
   components: {
@@ -62,7 +77,6 @@ export default {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  margin-left: 272px;
 }
 
 </style>
