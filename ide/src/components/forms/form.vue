@@ -1,6 +1,6 @@
 <template>
 
-<div id="form" class="ui-form-container">
+<div id="form" class="ui-form-container" v-bind:style="{ width: styles.width, height: styles.height }">
 	<div class="form-title">
 		<h1 class="ui-modal-header-text">
 			{{title}}
@@ -214,7 +214,14 @@ export default {
 
   },
 
-  props: ['title', 'content'],
+  props: {
+  	title: '',
+  	content: '',
+  	styles: {
+  		width: '250px',
+  		height: '400px'
+  	}
+  },
 
   methods: {
   }
@@ -377,7 +384,6 @@ export default {
 
 	.ui-form-container {
 	    outline: none;
-	    width: 528px;
 	    margin: 0 auto;
 	    padding: 0;
 	    background-color: #fff;

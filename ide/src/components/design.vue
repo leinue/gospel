@@ -44,7 +44,11 @@ export default {
   },
 
   methods: {
-    
+
+    startCoding: function() {
+      
+    }
+
   }
 }
 

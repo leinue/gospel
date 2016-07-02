@@ -1,6 +1,6 @@
 <template>
 
-  <forms v-bind:title="fuck" v-bind:content="fuckshit">
+  <forms v-bind:title="fuck" v-bind:content="fuckshit" v-bind:styles="styles">
     <div slot="content">
       <p>ssss</p>
     </div>
@@ -29,7 +29,12 @@ export default {
       msg: 'Hello Index!',
       isCoding: false,
       fuck: 'fuck111',
-      fuckshit: 'fuckshi111t'
+      fuckshit: 'fuckshi111t',
+
+      styles: {
+        width: '250px',
+        height: '500px'
+      }
     }
   },
 
