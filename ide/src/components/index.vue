@@ -1,5 +1,7 @@
 <template>
 
+  <forms></forms>
+
   <aside class="sidebar" v-hide="isCoding">
     <controls-panel></controls-panel>
   </aside>
@@ -15,6 +17,9 @@
 import controlsPanel from './controls.vue';
 import designPanel from './design.vue';
 import store from '../vuex.js';
+import forms from './forms/form.vue';
+
+console.log(forms);
 
 export default {
   data () {
@@ -30,7 +35,8 @@ export default {
 
   components: {
     controlsPanel,
-    designPanel
+    designPanel,
+    forms
   },
 
   store

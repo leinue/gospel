@@ -29,9 +29,10 @@ export default {
   ready() {
 
     this.$nextTick(function() {
-
       var editor = ace.edit("editor");
-
+      editor.setTheme("ace/theme/twilight");
+      var JavaScriptMode = ace.require("ace/mode/javascript").Mode;
+      editor.session.setMode(new JavaScriptMode());
     });
 
   },
@@ -54,8 +55,11 @@ export default {
 <style>
 
   #editor {
-      width: 100%;
-      height: 800px;
+    width: 100%;
+    height: 100vh;
+    margin-top: -16px;
+    margin-left: -16px;
+    width: calc(100% + 32px);
   }
   
 </style>
