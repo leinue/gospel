@@ -2,7 +2,10 @@
 
 <div id="form" class="ui-form-container">
 	<div class="form-title">
-		<h1 class="ui-modal-header-text">这是一个可以拖动的窗口</h1>
+		<h1 class="ui-modal-header-text">
+			{{title}}
+			<slot name="title"></slot>
+		</h1>
 	  	<div>
 	   		<a class="form-min" href="javascript:;" style="display:none" title="最小化"></a>
 	   		<ui-icon-button class="form-control form-revert" type="flat" style="display:none" color="default" icon="minus"></ui-icon-button>
@@ -19,10 +22,8 @@
 		<div class="form-resizeBR"></div>
 		<div class="form-resizeLB"></div>
 	<div class="form-content">
-		① 窗口可以拖动；<br />
-		② 窗口可以通过八个方向改变大小；<br />
-		③ 窗口可以最小化、最大化、还原、关闭；<br />
-		④ 限制窗口最小宽度/高度。
+		{{content}}
+		<slot name="content"></slot>
 	</div>
 </div>
 
@@ -98,7 +99,8 @@ function drag(oDrag, handle)
     oDrag.style.width = document.documentElement.clientWidth - 2 + "px";
     oDrag.style.height = document.documentElement.clientHeight - 2 + "px";
     this.style.display = "none";
-    oRevert.style.display = "block";
+    oRevert.style.display = "inline";
+    oRevert.style.top = '-9px';
   };
   //还原按钮
   oRevert.onclick = function ()
@@ -108,7 +110,8 @@ function drag(oDrag, handle)
     oDrag.style.left = (document.documentElement.clientWidth - oDrag.offsetWidth) / 2 + "px";
     oDrag.style.top = (document.documentElement.clientHeight - oDrag.offsetHeight) / 2 + "px";
     this.style.display = "none";
-    oMax.style.display = "block";
+    oMax.style.display = "inline";
+    oMax.style.top = '-9px';
   };
   //最小化按钮
   oMin.onclick = oClose.onclick = function ()
@@ -121,7 +124,7 @@ function drag(oDrag, handle)
     document.body.appendChild(oA);
     oA.onclick = function ()
     {
-      oDrag.style.display = "block";
+      oDrag.style.display = "inline";
       document.body.removeChild(this);
       this.onclick = null;
     };
@@ -200,6 +203,23 @@ window.onload = window.onresize = function ()
   oDrag.style.left = (document.documentElement.clientWidth - oDrag.offsetWidth) / 2 + "px";
   oDrag.style.top = (document.documentElement.clientHeight - oDrag.offsetHeight) / 2 + "px";
 }
+
+export default {
+  data () {
+    return {
+    }
+  },
+
+  ready() {
+
+  },
+
+  props: ['title', 'content'],
+
+  methods: {
+  }
+}
+
 </script>
 
 <style>

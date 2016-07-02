@@ -1,6 +1,10 @@
 <template>
 
-  <forms></forms>
+  <forms v-bind:title="fuck" v-bind:content="fuckshit">
+    <div slot="content">
+      <p>ssss</p>
+    </div>
+  </forms>
 
   <aside class="sidebar" v-hide="isCoding">
     <controls-panel></controls-panel>
@@ -19,13 +23,13 @@ import designPanel from './design.vue';
 import store from '../vuex.js';
 import forms from './forms/form.vue';
 
-console.log(forms);
-
 export default {
   data () {
     return {
       msg: 'Hello Index!',
-      isCoding: false
+      isCoding: false,
+      fuck: 'fuck111',
+      fuckshit: 'fuckshi111t'
     }
   },
 
