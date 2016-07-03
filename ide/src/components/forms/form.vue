@@ -1,6 +1,6 @@
 <template>
 
-<div id="{{fid}}" class="ui-form-container" v-bind:style="{ width: styles.width, height: styles.height, left: styles.left, top: styles.top}">
+<div @click="setTop()" id="{{fid}}" class="ui-form-container" v-bind:style="{ width: styles.width, height: styles.height, left: styles.left, top: styles.top}">
 	<div class="form-title">
 		<h1 class="ui-modal-header-text">
 			{{title}}
@@ -10,7 +10,7 @@
 	   		<a class="form-min" href="javascript:;" style="display:none" title="最小化"></a>
 	   		<ui-icon-button class="form-control form-revert" type="flat" style="display:none" color="default" icon="minus"></ui-icon-button>
 	   		<ui-icon-button class="form-control form-max" type="flat" color="default" icon="add"></ui-icon-button>
-	   		<ui-icon-button class="form-control form-close" type="flat" color="default" icon="close"></ui-icon-button>
+	   		<ui-icon-button @click="dispatchCloseEvent()" class="form-control form-close" type="flat" color="default" icon="close"></ui-icon-button>
 	  	</div>
 	</div>
 		<div class="form-resizeL"></div>
@@ -245,6 +245,30 @@ export default {
 
   methods: {
 
+  	dispatchCloseEvent: function() {
+  		this.$dispatch('on-close', 'close');
+  	},
+
+  	setTop: function() {
+
+		var oDrag = document.getElementById(this.fid);
+	    var oForm = get.byClass('ui-form-container', oDrag.parentNode);
+
+	    for (var i = 0; i < oForm.length; i++) {
+	    	var currentForm = oForm[i];
+	    	currentForm.style.zIndex = '65530';
+	    };
+
+	  	oDrag.style.zIndex = '65535';
+
+  	}
+
+  },
+
+  events: {
+  	'on-close': function(msg) {
+  		console.log(msg);
+  	}
   }
 }
 

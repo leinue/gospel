@@ -63,6 +63,10 @@ export default {
     forms
   },
 
+  methods: {
+
+  },
+
   store
 }
 
