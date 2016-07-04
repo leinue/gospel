@@ -2,9 +2,9 @@
 
   <ui-tabs type="text">
       <ui-tab header="设计">
-          My books
 
-          <a href="gogole.com">Hey</a>
+        
+
       </ui-tab>
 
       <ui-tab header="代码编辑" @selected="startCoding()">
@@ -62,6 +62,10 @@ export default {
     margin-top: -16px;
     margin-left: -16px;
     width: calc(100% + 32px);
+  }
+
+  .drop {
+    z-index: 65535;
   }
   
 </style>

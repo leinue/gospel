@@ -7,10 +7,6 @@
     </div>
   </forms>
 
-<!--   <aside class="sidebar" v-hide="isCoding">
-  </aside>
- -->
-
   <forms v-bind:styles="designStyles" fid="form">
     <span slot="title">设计与编码</span>
     <div slot="content">

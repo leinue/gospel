@@ -52,8 +52,39 @@
             </div>
         </ui-toolbar>
       </div>
-      <ui-menu :options="mainMenuOptions" @option-selected="triggerMainMenuSelected()" :trigger="$els.triggerB" show-icons show-secondary-text></ui-menu>
+      <ui-menu :options="mainMenuOptions" @option-selected="triggerMainMenuSelected" :trigger="$els.triggerB" show-icons show-secondary-text></ui-menu>
       <!-- <ui-button @click="setLoading()" color="primary">Google Material Design</ui-button> -->
+      <section>
+        
+        <ui-modal
+          :show.sync="modalShowingCtrl.newProjectModal" header="新建项目">
+          <div slot="default">
+
+            <ui-radio-group
+                :options="projectTypeGroup" label="请选择项目类型" :value.sync="project.projectType" help-text="个人项目是免费的"
+            ></ui-radio-group>
+
+            <p></p>
+
+            <ui-radio-group
+                :options="projectPlatformGroup" label="请选择项目平台" :value.sync="project.projectPlatform"
+            ></ui-radio-group>            
+
+            <p></p>
+
+            <ui-textbox
+                label="项目名称" name="projectName" type="text" placeholder="请输入项目名称"
+                validation-rules="required" :autocomplete="false"
+            ></ui-textbox>
+
+          </div>
+          <div slot="footer">
+              <ui-button @click="modalShowingCtrl.newProjectModal = false">取消</ui-button>
+              <ui-button color="primary">新建</ui-button>
+          </div>
+        </ui-modal>
+
+      </section>
     </header>
     <section>
       <router-view></router-view>
@@ -73,7 +104,24 @@ export default {
       var btn = this.$els.triggerB;
     },
 
-    triggerMainMenuSelected: function() {
+    triggerMainMenuSelected: function(selectedOption) {
+
+      switch(selectedOption.id) {
+
+        case 'new-project':
+
+          this.modalShowingCtrl.newProjectModal = true;
+
+          break;
+        case 'save-project':
+          break;
+        case 'delete-project':
+          break;
+        default:
+          break;
+
+      }
+
     }
 
   },
@@ -105,19 +153,19 @@ export default {
       }],
 
       mainMenuOptions: [{
-          id: 'edit',
+          id: 'new-project',
           text: '新建项目',
           icon: 'edit',
           secondaryText: 'Ctrl+N'
       }, {
-          id: 'duplicate',
+          id: 'save-project',
           text: '保存项目',
           icon: 'content_copy',
           secondaryText: 'Ctrl+S'
       },{
           type: 'divider'
       }, {
-          id: 'delete',
+          id: 'delete-project',
           text: '删除项目 ',
           icon: 'delete',
           secondaryText: 'Del'
@@ -131,7 +179,35 @@ export default {
         id: 'console',
         text: '控制台',
         secondaryText: 'O'
-      }]
+      }],
+
+      modalShowingCtrl: {
+        newProjectModal: false
+      },
+
+      projectTypeGroup: [{
+        value: 'personal',
+        text: '个人项目'
+      },{
+        value: 'team',
+        text: '团队项目'
+      }],
+
+      projectPlatformGroup: [{
+        value: 'web',
+        text: 'Web端'
+      }, {
+        value: 'WebApp',
+        text: 'Web App'
+      }, {
+        value: 'HybirdApp',
+        text: '混合App'
+      }],
+
+      project: {
+        projectType: 'personal',
+        projectPlatform: 'web'
+      }
     }
   }
 }
@@ -193,8 +269,14 @@ body {
 
 .toolbar {
   height: 100%;
-  /*line-height: 100%;*/
-
 }
 
+.ui-modal-mask {
+  z-index: 65535!important;
+}
+
+.ui-radio-input:checked ~ .ui-radio-inner-dot {
+    margin-top: 2px;
+    margin-left: 2px;
+}
 </style>

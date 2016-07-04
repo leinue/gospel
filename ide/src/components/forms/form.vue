@@ -73,10 +73,10 @@ function drag(oDrag, handle)
 
     for (var i = 0; i < oForm.length; i++) {
     	var currentForm = oForm[i];
-    	currentForm.style.zIndex = '65530';
+    	currentForm.style.zIndex = '65000';
     };
 
-  	oDrag.style.zIndex = '65535';
+  	oDrag.style.zIndex = '65500';
     document.onmousemove = function (event)
     {
       var event = event || window.event;
@@ -256,10 +256,10 @@ export default {
 
 	    for (var i = 0; i < oForm.length; i++) {
 	    	var currentForm = oForm[i];
-	    	currentForm.style.zIndex = '65530';
+	    	currentForm.style.zIndex = '65000';
 	    };
 
-	  	oDrag.style.zIndex = '65535';
+	  	oDrag.style.zIndex = '65500';
 
   	}
 
