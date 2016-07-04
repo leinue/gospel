@@ -55,7 +55,7 @@
       <ui-menu :options="mainMenuOptions" @option-selected="triggerMainMenuSelected" :trigger="$els.triggerB" show-icons show-secondary-text></ui-menu>
       <!-- <ui-button @click="setLoading()" color="primary">Google Material Design</ui-button> -->
       <section>
-        
+
         <ui-modal
           :show.sync="modalShowingCtrl.newProjectModal" header="新建项目">
           <div slot="default">
@@ -73,14 +73,15 @@
             <p></p>
 
             <ui-textbox
-                label="项目名称" name="projectName" type="text" placeholder="请输入项目名称"
+                label="项目名称" name="projectName" type="text" placeholder="请输入项目名称" :value.sync="project.projectName"
                 validation-rules="required" :autocomplete="false"
+                @keydown="projectNameChanged"
             ></ui-textbox>
 
           </div>
           <div slot="footer">
               <ui-button @click="modalShowingCtrl.newProjectModal = false">取消</ui-button>
-              <ui-button color="primary">新建</ui-button>
+              <ui-button color="primary" @click="confirmToCreateTheProject()" :disabled.sync="modalShowingCtrl.btnConfirmDisabled">新建</ui-button>
           </div>
         </ui-modal>
 
@@ -107,11 +108,8 @@ export default {
     triggerMainMenuSelected: function(selectedOption) {
 
       switch(selectedOption.id) {
-
         case 'new-project':
-
           this.modalShowingCtrl.newProjectModal = true;
-
           break;
         case 'save-project':
           break;
@@ -119,9 +117,20 @@ export default {
           break;
         default:
           break;
-
       }
 
+    },
+
+    confirmToCreateTheProject: function() {
+      if(this.project.projectName != '') {
+        this.modalShowingCtrl.newProjectModal = false;
+      }
+    },
+
+    projectNameChanged: function() {
+      if(this.project.projectName != '') {
+        this.modalShowingCtrl.btnConfirmDisabled = false;
+      }
     }
 
   },
@@ -182,7 +191,8 @@ export default {
       }],
 
       modalShowingCtrl: {
-        newProjectModal: false
+        newProjectModal: false,
+        btnConfirmDisabled: true
       },
 
       projectTypeGroup: [{
@@ -206,7 +216,8 @@ export default {
 
       project: {
         projectType: 'personal',
-        projectPlatform: 'web'
+        projectPlatform: 'web',
+        projectName: ''
       }
     }
   }
