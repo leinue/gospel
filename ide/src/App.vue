@@ -68,7 +68,7 @@
 
             <ui-radio-group
                 :options="projectPlatformGroup" label="请选择项目平台" :value.sync="project.projectPlatform"
-            ></ui-radio-group>            
+            ></ui-radio-group>
 
             <p></p>
 
@@ -84,6 +84,16 @@
               <ui-button color="primary" @click="confirmToCreateTheProject()" :disabled.sync="modalShowingCtrl.btnConfirmDisabled">新建</ui-button>
           </div>
         </ui-modal>
+
+        <ui-confirm
+            header="删除项目" type="danger" confirm-button-text="删除"
+            confirm-button-icon="delete" deny-button-text="取消" @confirmed="deleteProjectConfirmed"
+            @denied="deleteProjectDenied" :show.sync="confirmShowingCtrl.deleteProjectConfirm" close-on-confirm
+        >
+            你确认要删除此项目吗？（无法恢复）
+        </ui-confirm>
+
+        <ui-snackbar :show.sync="snckbarShowingCtrl.saveSucess" action="确认">保存成功</ui-snackbar>
 
       </section>
     </header>
@@ -112,8 +122,10 @@ export default {
           this.modalShowingCtrl.newProjectModal = true;
           break;
         case 'save-project':
+          this.snckbarShowingCtrl.saveSucess = true;
           break;
         case 'delete-project':
+          this.confirmShowingCtrl.deleteProjectConfirm = true;
           break;
         default:
           break;
@@ -131,8 +143,11 @@ export default {
       if(this.project.projectName != '') {
         this.modalShowingCtrl.btnConfirmDisabled = false;
       }
-    }
+    },
 
+    deleteProjectConfirmed: function() {
+      this.confirmShowingCtrl.deleteProjectConfirm = false;
+    }
   },
 
   props: {
@@ -193,6 +208,14 @@ export default {
       modalShowingCtrl: {
         newProjectModal: false,
         btnConfirmDisabled: true
+      },
+
+      confirmShowingCtrl: {
+        deleteProjectConfirm: false
+      },
+
+      snckbarShowingCtrl: {
+        saveSucess: false
       },
 
       projectTypeGroup: [{
@@ -289,5 +312,10 @@ body {
 .ui-radio-input:checked ~ .ui-radio-inner-dot {
     margin-top: 2px;
     margin-left: 2px;
+}
+
+.ui-snackbar {
+  z-index: 65535!important;
+  transform: scale(1);
 }
 </style>
