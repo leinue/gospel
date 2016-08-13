@@ -9,7 +9,10 @@
 
       <ui-tab header="代码编辑" @selected="startCoding()">
 
-        <div id="editor">some text</div>
+        <div id="editor">var x = '';
+if (x) {
+    alert('fucku bitch');
+}</div>
 
       </ui-tab>
   </ui-tabs>
@@ -19,10 +22,12 @@
 <script>
 
 import { incrementCounter } from '../vuex/actions.js';
+import $ from 'jquery';
 
 export default {
   data () {
     return {
+
     }
   },
 
@@ -33,6 +38,8 @@ export default {
       editor.setTheme("ace/theme/twilight");
       var JavaScriptMode = ace.require("ace/mode/javascript").Mode;
       editor.session.setMode(new JavaScriptMode());
+
+      console.log('fuck', $);
     });
 
   },

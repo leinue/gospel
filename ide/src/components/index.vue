@@ -16,6 +16,20 @@
     </div>
   </forms>
 
+  <forms v-bind:styles="attrStyles" fid="attributes">
+    <span slot="title">属性面板</span>
+    <div slot="content">
+    ssss
+    </div>
+  </forms>
+
+  <forms v-bind:styles="consoleStyles" fid="console">
+    <span slot="title">控制台</span>
+    <div slot="content">
+      
+    </div>
+  </forms>
+
 </template>
 
 <script>
@@ -34,17 +48,31 @@ export default {
       fuckshit: 'fuckshi111t',
 
       styles: {
-        width: '272px',
-        height: 'calc(100% - 56px)',
+        width: '250px',
+        height: 'calc(100% - 46px)',
         left: '0px',
-        top: '56px'
+        top: '46px'
       },
 
       designStyles: {
-        left: '273px',
-        top: '56px',
-        width: 'calc(100% - 274px)',
-        height: 'calc(100% - 56px)'
+        left: '254px',
+        top: '46px',
+        width: 'calc(100% - 508px)',
+        height: 'calc(100% - 46px)'
+      },
+
+      attrStyles: {
+        left: 'calc(100% - 250px)',
+        top: '46px',
+        width: '250px',
+        height: 'calc(100% - 46px)'
+      },
+
+      consoleStyles: {
+        left: 'calc( (100% - 550px) / 2 )',
+        top: 'calc(100% - 250px)',
+        width: '550px',
+        height: '250px'
       }
     }
   },
@@ -77,6 +105,10 @@ export default {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+}
+
+.ui-snackbar {
+  padding: 8px 24px;
 }
 
 </style>

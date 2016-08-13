@@ -20,7 +20,7 @@
                     type="clear" color="white" icon="menu"
                     v-el:trigger-b
                 ></ui-icon-button>
-                <span style="top: 17px;position: fixed;">Gospel</span>
+                <span style="top: 14px;position: fixed;">Gospel</span>
               </div>
             </div>
 
@@ -61,12 +61,14 @@
           <div slot="default">
 
             <ui-radio-group
+                name="projectType"
                 :options="projectTypeGroup" label="请选择项目类型" :value.sync="project.projectType" help-text="个人项目是免费的"
             ></ui-radio-group>
 
             <p></p>
 
             <ui-radio-group
+                name="projectPlatform"
                 :options="projectPlatformGroup" label="请选择项目平台" :value.sync="project.projectPlatform"
             ></ui-radio-group>
 
@@ -147,6 +149,10 @@ export default {
 
     deleteProjectConfirmed: function() {
       this.confirmShowingCtrl.deleteProjectConfirm = false;
+    },
+
+    deleteProjectDenied: function() {
+      
     }
   },
 
@@ -257,6 +263,7 @@ html {
 body {
   height: 100%;
   margin: 0px;
+  font-size: 12px;
 }
 
 #app {
@@ -317,5 +324,27 @@ body {
 .ui-snackbar {
   z-index: 65535!important;
   transform: scale(1);
+}
+
+.ui-collapsible-header {
+  font-size: 12px!important;
+}
+
+.ui-toolbar {
+  height: 46px!important;
+  font-size: 14px!important;
+}
+
+.ui-toolbar-title {
+  line-height: 1.5;
+}
+
+.ui-toolbar .ui-icon-button {
+    width: 38px!important;
+    height: 38px!important;
+}
+
+.tooltip-element.ui-tooltip-theme {
+    z-index: 65535!important;
 }
 </style>
