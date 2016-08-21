@@ -14,14 +14,18 @@
     <div slot="header">
       控件
     </div>
-    <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur nemo suscipit ipsa molestias, tempora dolor natus modi et incidunt tenetur!</div>
+    <div>
+      
+    </div>
   </ui-collapsible>
 
   <ui-collapsible>
     <div slot="header">
       插件
     </div>
-    <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur nemo suscipit ipsa molestias, tempora dolor natus modi et incidunt tenetur!</div>
+    <div>
+      
+    </div>  
   </ui-collapsible>
 
 </template>

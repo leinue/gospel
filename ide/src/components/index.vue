@@ -11,7 +11,7 @@
     <span slot="title">设计与编码</span>
     <div slot="content">
       <section class="design">
-        <design-panel></design-panel>  
+        <design-panel></design-panel>
       </section>
     </div>
   </forms>
@@ -23,7 +23,7 @@
     </div>
   </forms>
 
-  <forms v-bind:styles="consoleStyles" fid="console">
+  <forms v-show="false" v-bind:styles="consoleStyles" fid="console">
     <span slot="title">控制台</span>
     <div slot="content">
       
@@ -55,9 +55,9 @@ export default {
       },
 
       designStyles: {
-        left: '254px',
+        left: '251px',
         top: '46px',
-        width: 'calc(100% - 508px)',
+        width: 'calc(100% - 501px)',
         height: 'calc(100% - 46px)'
       },
 

@@ -425,13 +425,13 @@ export default {
 	    padding: 0;
 	    background-color: #fff;
 	    border-radius: 2px;
-	    box-shadow: 0 2px 8px rgba(0,0,0,.33);
 	    max-height: 100vh;
 	    max-width: 100vw;
 	    overflow-x: hidden;
 	    overflow-y: auto;
 		position: absolute;
 		z-index: 60000;
+		border: 1px solid #dde1e4;
 	}
 
 	.form-control {
