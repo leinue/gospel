@@ -10,6 +10,8 @@ import routerConfig from './routers.js';
 import Vuex from 'vuex';
 import stores from './vuex/stores.js';
 
+import $ from 'jquery';
+
 //加载keen-ui
 Vue.use(Keen);
 Vue.use(Vuex);

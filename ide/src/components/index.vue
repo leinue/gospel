@@ -78,7 +78,6 @@ export default {
   },
 
   ready() {
-    console.log(document.width);
   },
 
   components: {
