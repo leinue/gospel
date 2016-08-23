@@ -1,4 +1,5 @@
-window.onload = function() {
+
+var initDesigner = function() {
 
   $(".cpList", parent.document).find("li").each(function() {  
     var _this = $(this);
@@ -36,7 +37,7 @@ window.onload = function() {
     	var elemTypeList = {
     		button: function(caption) {
     			caption = caption || '按钮';
-    			var btnHTML = '<a href="#" class="button">' + caption + '</a>';
+    			var btnHTML = '<a href="#" class="button">' + caption + '</a>\r\n';
     			return btnHTML;
     		},
 
@@ -92,6 +93,8 @@ window.onload = function() {
   $dest.on('drop', function(ev) {
     ev.preventDefault();
 
+    console.log('droppp');
+
     var df = ev.dataTransfer;
     var elemId = df.getData('application/elem');
 
@@ -106,6 +109,8 @@ window.onload = function() {
     var elemHTML = controls.generatorElement(elemType, isInput);
     controls.appendElement(ev.target, elemHTML);
 
+    parent.refreshDesignerCode($('body').html());
+
     return false;
   });
 
@@ -114,6 +119,8 @@ window.onload = function() {
   });
 
 };
+
+parent.document.onreadystatechange = initDesigner;
 
 // var Draggable = function(options){
 //     var options = options || {};  

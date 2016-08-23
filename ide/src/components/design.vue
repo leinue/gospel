@@ -1,7 +1,7 @@
 <template>
 
   <ui-tabs type="text">
-      <ui-tab header="设计">
+      <ui-tab header="设计" @selected="refreshIframe()">
 
         <div class="designer-wrapper">
         </div>
@@ -32,7 +32,9 @@ export default {
         context: '',
         dom: '',
         codes: '// TO DO'
-      }
+      },
+
+      editor: ''
     }
   },
 
@@ -66,11 +68,6 @@ export default {
 
           self.$nextTick(function() {
 
-            var refreshIframe = function(html) {
-              var designer = self.$get('designer.context');
-              $('.designer').contents().find('body').html(html);
-            }
-
             //初始化编辑器
             ace.require("ace/ext/language_tools");
             var editor = ace.edit("editor");
@@ -78,6 +75,12 @@ export default {
             editor.setOptions({
                 enableBasicAutocompletion: true
             });
+
+            window.refreshDesignerCode = function(codes) {
+              self.$set('codes', codes);
+              editor.setValue(codes);
+              editor.clearSelection();
+            }
 
             var HTMLMode = ace.require("ace/mode/html").Mode;
             var JavaScript = ace.require('ace/mode/javascript').Mode;
@@ -89,16 +92,15 @@ export default {
 
               var editorAfterChanged = new Date().getTime();
 
-              console.log(editorAfterChanged, editorBeforeChanged);
-
               if(editorAfterChanged - editorBeforeChanged > 1500) {
                 editorBeforeChanged = editorAfterChanged;
-                console.log('输入完毕');
               }
 
-              refreshIframe(editor.getValue());
+              // refreshIframe(editor.getValue());
 
             });
+
+            self.$set('editor', editor);
 
           });
 
@@ -140,7 +142,11 @@ export default {
   methods: {
 
     startCoding: function() {
-      
+      this.editor.focus();
+    },
+
+    refreshIframe: function() {
+      $('.designer').contents().find('body').html(this.editor.getValue());
     }
 
   }
