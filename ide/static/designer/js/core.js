@@ -1,195 +1,211 @@
+(function () {
 
-var jq = jQuery.noConflict();
+  var jq = jQuery.noConflict();
 
-var isLoadedOnce = false;
+  var isLoadedOnce = false;
 
-var util = {
+  var util = {
 
-  randomString: function(len) {
-  　len = len || 32;
-  　var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';    /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
-  　var maxPos = $chars.length;
-  　var pwd = '';
-  　for (i = 0; i < len; i++) {
-  　    pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
-  　}
-  　return pwd;
-  },
-
-  json2css: function(data) {
-    var stringify = JSON.stringify(data);
-
-    stringify = stringify.replace('{', '');
-    stringify = stringify.replace('}', '');
-    stringify = stringify.replace(/,/g, ';');
-    stringify = stringify.replace(/"([^"]*)"/g, '$1');
-
-    return stringify;
-  }
-
-}
-
-document.oncontextmenu = function(){
-  // return false;
-};
-
-var initDesigner = function() {
-
-  if(!isLoadedOnce) {
-
-    $(".cpList", parent.document).find("li").each(function() {  
-      var _this = $(this);
-
-      _this.on("dragstart", function(ev) {//开始拖拽  
-          var dt = ev.dataTransfer;
-          console.log(dt, ev);
-          dt.setData('application/elem', ev.target.id);//将拖拽组件ID传入
-      });
-
-      _this.on('dragend', function(ev) {
-        console.log('end');
-        ev.preventDefault();
-      });
-    });
-
-  }
-
-  var $destId = '.gospel-designer-area';
-  var $dest = $($destId);
-
-  var elemHighLight = {
-    hightlight: function(target) {
-    	target.addClass('highlight-elem');
+    randomString: function(len) {
+    　len = len || 32;
+    　var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';    /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
+    　var maxPos = $chars.length;
+    　var pwd = '';
+    　for (i = 0; i < len; i++) {
+    　    pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+    　}
+    　return pwd;
     },
 
-    undoHighlight: function(target) {
-    	target.removeClass('highlight-elem');
+    json2css: function(data) {
+      var stringify = JSON.stringify(data);
+
+      stringify = stringify.replace('{', '');
+      stringify = stringify.replace('}', '');
+      stringify = stringify.replace(/,/g, ';');
+      stringify = stringify.replace(/"([^"]*)"/g, '$1');
+
+      return stringify;
     }
+
+  }
+
+  document.oncontextmenu = function(){
+    // return false;
   };
 
-  var controls = {
-    generatorElement: function(elemType, isInput) {
+  var controlsList = [];
 
-    	isInput = isInput || false;
+  window.initDesigner = function() {
 
-    	var elemTypeList = {
-    		button: function(caption) {
-    			caption = caption || '按钮';
-    			var btnHTML = '<a href="#" class="button">' + caption + '</a>\r\n';
-    			return btnHTML;
-    		},
+    if(!isLoadedOnce) {
 
-    		input: function(value) {
-    			value = value || '';
-    			var inputHTML = '<div class="list-block">\
-    <ul><li>\
-        <div class="item-content">\
-          <div class="item-media"><i class="icon icon-form-name"></i></div>\
-          <div class="item-inner">\
-            <div class="item-input">\
-              <input type="text" placeholder="Your name">\
-            </div>\
-          </div>\
-        </div>\
-      </li></ul></div>\r\n';
-    			return inputHTML;
-    		},
+      $(".cpList", parent.document).find("li").each(function() {  
+        var _this = $(this);
 
-    		label: function(value) {
-    			value = value || '标签文本';
-    			var html = '<p>' + value + '</p>\r\n';
-    			return html;    					
-    		},
+        _this.on("dragstart", function(ev) {//开始拖拽  
+            var dt = ev.dataTransfer;
+            console.log(dt, ev);
+            dt.setData('application/elem', ev.target.id);//将拖拽组件ID传入
+        });
 
-    		grid: function() {
+        _this.on('dragend', function(ev) {
+          console.log('end');
+          ev.preventDefault();
+        });
+      });
 
-    		},
+    }
 
-    		padded: function(value) {
-    			var html = '<div class="content-padded"></div>\r\n';
-    			return html;    					
-    		}
-    	}
-
-    	return typeof elemTypeList[elemType] == 'undefined' ? '' : elemTypeList[elemType]();
-
-    },
-
-    appendElement: function(container, elem, pos) {
-    	if(!elem) {
-    		return false;
-    	}
-
-      var myId = util.randomString(8);
-
-      var pos = {
-        position: 'absolute',
-        top: pos.clientY + 'px',
-        left: pos.clientX + 'px'
-      };
-
-      pos = util.json2css(pos);
-
-    	$(container).append('<div id="' + myId + '" class="element-box" style="' + pos + '">\r\n' + elem + '</div>\r\n');
-
+    var makeElemDraggable = function(myId) {
       jq('#' + myId).dragging({
         move: 'both', //拖动方向，x y both
         randomPosition: false //初始位置是否随机
       });
     }
-  }
 
-  $dest.on('dragenter', function(ev) {
-    var targetEl = $(ev.target);
-    elemHighLight.hightlight(targetEl);
-  });
+    if(controlsList.length !== 0) {
+      controlsList.forEach(function(val, key) {
+        makeElemDraggable(val);
+      });
+    }
 
-  $dest.on('dragleave', function(ev) {
-    var targetEl = $(ev.target);
-    elemHighLight.undoHighlight(targetEl);
-  });
+    var $destId = '.gospel-designer-area';
+    var $dest = $($destId);
 
-  $dest.on('dragover', function(ev) {
-    ev.preventDefault();
-  });
+    var elemHighLight = {
+      hightlight: function(target) {
+        target.addClass('highlight-elem');
+      },
 
-  $dest.on('drop', function(ev) {
-    ev.preventDefault();
+      undoHighlight: function(target) {
+        target.removeClass('highlight-elem');
+      }
+    };
 
-    console.log('droppp', ev);
+    var controls = {
+      generatorElement: function(elemType, isInput) {
 
-    var df = ev.dataTransfer;
-    var elemId = df.getData('application/elem');
+        isInput = isInput || false;
 
-    var targetEl = $(ev.target);
-    elemHighLight.undoHighlight(targetEl);
+        var elemTypeList = {
+          button: function(caption) {
+            caption = caption || '按钮';
+            var btnHTML = '<a href="#" class="button">' + caption + '</a>\r\n';
+            return btnHTML;
+          },
 
-    var ctx = $(this).get(0);
+          input: function(value) {
+            value = value || '';
+            var inputHTML = '<div class="list-block">\
+      <ul><li>\
+          <div class="item-content">\
+            <div class="item-media"><i class="icon icon-form-name"></i></div>\
+            <div class="item-inner">\
+              <div class="item-input">\
+                <input type="text" placeholder="Your name">\
+              </div>\
+            </div>\
+          </div>\
+        </li></ul></div>\r\n';
+            return inputHTML;
+          },
 
-    var isInput = elemId.indexOf('input') === 0 ? true : false;
-    var elemType = elemId.split('_')[1];
+          label: function(value) {
+            value = value || '标签文本';
+            var html = '<p>' + value + '</p>\r\n';
+            return html;              
+          },
 
-    var elemHTML = controls.generatorElement(elemType, isInput);
-    controls.appendElement(ev.target, elemHTML, {
-      clientX: ev.clientX,
-      clientY: ev.layerY
+          grid: function() {
+
+          },
+
+          padded: function(value) {
+            var html = '<div class="content-padded"></div>\r\n';
+            return html;              
+          }
+        }
+
+        return typeof elemTypeList[elemType] == 'undefined' ? '' : elemTypeList[elemType]();
+
+      },
+
+      appendElement: function(container, elem, pos) {
+        if(!elem) {
+          return false;
+        }
+
+        var myId = util.randomString(8);
+
+        var pos = {
+          position: 'absolute',
+          top: pos.clientY + 'px',
+          left: pos.clientX + 'px'
+        };
+
+        pos = util.json2css(pos);
+
+        $(container).append('<div id="' + myId + '" class="element-box" style="' + pos + '">\r\n' + elem + '</div>\r\n');
+
+        controlsList.push(myId);
+        makeElemDraggable(myId);
+
+      }
+    }
+
+    $dest.on('dragenter', function(ev) {
+      var targetEl = $(ev.target);
+      elemHighLight.hightlight(targetEl);
     });
 
-    parent.refreshDesignerCode($('body').html());
+    $dest.on('dragleave', function(ev) {
+      var targetEl = $(ev.target);
+      elemHighLight.undoHighlight(targetEl);
+    });
 
-    return false;
-  });
+    $dest.on('dragover', function(ev) {
+      ev.preventDefault();
+    });
 
-  $($destId).each(function(key, val) {
-    // console.log(key, val);
-  });
+    $dest.on('drop', function(ev) {
+      ev.preventDefault();
 
-  isLoadedOnce = true;
+      console.log('droppp', ev);
 
-};
+      var df = ev.dataTransfer;
+      var elemId = df.getData('application/elem');
 
-parent.document.onreadystatechange = initDesigner;
+      var targetEl = $(ev.target);
+      elemHighLight.undoHighlight(targetEl);
 
+      var ctx = $(this).get(0);
+
+      var isInput = elemId.indexOf('input') === 0 ? true : false;
+      var elemType = elemId.split('_')[1];
+
+      var elemHTML = controls.generatorElement(elemType, isInput);
+      controls.appendElement(ev.target, elemHTML, {
+        clientX: ev.clientX,
+        clientY: ev.layerY
+      });
+
+      parent.refreshDesignerCode($('body').html());
+
+      return false;
+    });
+
+    $($destId).each(function(key, val) {
+      // console.log(key, val);
+    });
+
+    isLoadedOnce = true;
+
+  };
+
+  parent.document.onreadystatechange = initDesigner;
+
+})();
 // var Draggable = function(options){
 //     var options = options || {};  
 //     var tag = options.dragTag || "LI";//目前只支持li  
