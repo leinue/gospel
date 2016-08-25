@@ -1,20 +1,58 @@
 
+var jq = jQuery.noConflict();
+
+var isLoadedOnce = false;
+
+var util = {
+
+  randomString: function(len) {
+  　len = len || 32;
+  　var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';    /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
+  　var maxPos = $chars.length;
+  　var pwd = '';
+  　for (i = 0; i < len; i++) {
+  　    pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+  　}
+  　return pwd;
+  },
+
+  json2css: function(data) {
+    var stringify = JSON.stringify(data);
+
+    stringify = stringify.replace('{', '');
+    stringify = stringify.replace('}', '');
+    stringify = stringify.replace(/,/g, ';');
+    stringify = stringify.replace(/"([^"]*)"/g, '$1');
+
+    return stringify;
+  }
+
+}
+
+document.oncontextmenu = function(){
+  // return false;
+};
+
 var initDesigner = function() {
 
-  $(".cpList", parent.document).find("li").each(function() {  
-    var _this = $(this);
+  if(!isLoadedOnce) {
 
-    _this.on("dragstart", function(ev) {//开始拖拽  
-        var dt = ev.dataTransfer;
-        console.log(dt, ev);
-        dt.setData('application/elem', ev.target.id);//将拖拽组件ID传入
+    $(".cpList", parent.document).find("li").each(function() {  
+      var _this = $(this);
+
+      _this.on("dragstart", function(ev) {//开始拖拽  
+          var dt = ev.dataTransfer;
+          console.log(dt, ev);
+          dt.setData('application/elem', ev.target.id);//将拖拽组件ID传入
+      });
+
+      _this.on('dragend', function(ev) {
+        console.log('end');
+        ev.preventDefault();
+      });
     });
 
-    _this.on('dragend', function(ev) {
-    	console.log('end');
-    	ev.preventDefault();
-    });
-  });
+  }
 
   var $destId = '.gospel-designer-area';
   var $dest = $($destId);
@@ -43,13 +81,23 @@ var initDesigner = function() {
 
     		input: function(value) {
     			value = value || '';
-    			var inputHTML = '';
+    			var inputHTML = '<div class="list-block">\
+    <ul><li>\
+        <div class="item-content">\
+          <div class="item-media"><i class="icon icon-form-name"></i></div>\
+          <div class="item-inner">\
+            <div class="item-input">\
+              <input type="text" placeholder="Your name">\
+            </div>\
+          </div>\
+        </div>\
+      </li></ul></div>\r\n';
     			return inputHTML;
     		},
 
     		label: function(value) {
     			value = value || '标签文本';
-    			var html = '<p>' + value + '</p>';
+    			var html = '<p>' + value + '</p>\r\n';
     			return html;    					
     		},
 
@@ -58,7 +106,7 @@ var initDesigner = function() {
     		},
 
     		padded: function(value) {
-    			var html = '<div class="content-padded"></div>';
+    			var html = '<div class="content-padded"></div>\r\n';
     			return html;    					
     		}
     	}
@@ -67,12 +115,27 @@ var initDesigner = function() {
 
     },
 
-    appendElement: function(container, elem) {
+    appendElement: function(container, elem, pos) {
     	if(!elem) {
     		return false;
     	}
 
-    	$(container).append(elem);
+      var myId = util.randomString(8);
+
+      var pos = {
+        position: 'absolute',
+        top: pos.clientY + 'px',
+        left: pos.clientX + 'px'
+      };
+
+      pos = util.json2css(pos);
+
+    	$(container).append('<div id="' + myId + '" class="element-box" style="' + pos + '">\r\n' + elem + '</div>\r\n');
+
+      jq('#' + myId).dragging({
+        move: 'both', //拖动方向，x y both
+        randomPosition: false //初始位置是否随机
+      });
     }
   }
 
@@ -93,7 +156,7 @@ var initDesigner = function() {
   $dest.on('drop', function(ev) {
     ev.preventDefault();
 
-    console.log('droppp');
+    console.log('droppp', ev);
 
     var df = ev.dataTransfer;
     var elemId = df.getData('application/elem');
@@ -107,7 +170,10 @@ var initDesigner = function() {
     var elemType = elemId.split('_')[1];
 
     var elemHTML = controls.generatorElement(elemType, isInput);
-    controls.appendElement(ev.target, elemHTML);
+    controls.appendElement(ev.target, elemHTML, {
+      clientX: ev.clientX,
+      clientY: ev.layerY
+    });
 
     parent.refreshDesignerCode($('body').html());
 
@@ -117,6 +183,8 @@ var initDesigner = function() {
   $($destId).each(function(key, val) {
     // console.log(key, val);
   });
+
+  isLoadedOnce = true;
 
 };
 

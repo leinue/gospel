@@ -14,7 +14,7 @@
           <li id="grid_padded" title="文本输入框" class="component">  
               <div class="cpIcon"></div>  
               <p>内边距</p>  
-          </li>          
+          </li>
       </ul>
 
     </div>

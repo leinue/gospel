@@ -1,0 +1,11 @@
+.highlight-elem {
+	background: #b0dbec!important;
+}
+
+.element-box {
+	z-index: 100!important;	
+}
+
+.element-box * {
+	z-index: -1;
+}

@@ -46,7 +46,7 @@ export default {
 
       //可拖拽组件初始化
       $('.cpList li').each(function(){  
-          $(this).attr("draggable","true");
+          $(this).attr("draggable", "true");
       });
 
       //初始化设计器
@@ -77,6 +77,7 @@ export default {
             });
 
             window.refreshDesignerCode = function(codes) {
+              console.log(codes);
               self.$set('codes', codes);
               editor.setValue(codes);
               editor.clearSelection();
@@ -143,10 +144,12 @@ export default {
 
     startCoding: function() {
       this.editor.focus();
+      this.editor.gotoLine(this.editor.session.getLength());      
     },
 
     refreshIframe: function() {
       $('.designer').contents().find('body').html(this.editor.getValue());
+      document.getElementById('gospelDesignerArea').contentWindow.initDesigner();
     }
 
   }
