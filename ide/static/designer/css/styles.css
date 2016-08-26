@@ -81,3 +81,55 @@
 	margin-top: -5px;
 	cursor: s-resize;
 }
+
+.xyruler {
+	/*display: none;*/
+}
+
+.xruler {
+	border-top: 1px dotted #0088cc;
+	width: 100%;
+	position: absolute;
+	top: 50%;
+	margin-top: -1px;
+}
+
+.xruler-25 {
+	border-top: 1px dotted #0088cc;
+	width: 100%;
+	position: absolute;
+	top: 25%;
+	margin-top: -1px;	
+}
+
+.xruler-75 {
+	border-top: 1px dotted #0088cc;
+	width: 100%;
+	position: absolute;
+	top: 75%;
+	margin-top: -1px;	
+}
+
+.yruler {
+	border-left: 1px dotted #0088cc;
+	height: 100%;
+	position: absolute;
+	left: 50%;
+	margin-left: -1px;
+}
+
+.yruler-25 {
+	border-left: 1px dotted #0088cc;
+	height: 100%;
+	position: absolute;
+	left: 25%;
+	margin-left: -1px;
+}
+
+.yruler-75 {
+	border-left: 1px dotted #0088cc;
+	height: 100%;
+	position: absolute;
+	left: 75%;
+	margin-left: -1px;
+}

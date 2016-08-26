@@ -95,21 +95,99 @@
     },
 
     makeElemInDesignerDraggable: function(id) {
+
+      var isControlMouseDown = false,
+          isControlDragged = false,
+
+          isTargetToControl = function(target) {
+            return !$(target).hasClass('content');
+          };
+
       jq('#' + id).dragging({
         move: 'both',
         randomPosition: false,
 
         onMouseUp: function(e) {
 
+          if(!isTargetToControl(e.target)) {
+            return false;
+          }
+
+          isControlMouseDown = false;
+          isControlDragged = false;
+          // $('.xyruler').hide();
         },
 
         onMouseDown: function(e) {
 
+          if(!isTargetToControl(e.target)) {
+            return false;
+          }          
 
-
+          isControlMouseDown = true;
         },
 
         onMouseMove: function(e, direction, moveX, moveY) {
+
+          if(!isTargetToControl(e.target)) {
+            return false;
+          }
+
+          if(!isControlMouseDown) {
+            console.log('isControlMouseDown false');
+            return false;
+          }
+
+          isControlDragged = true;
+
+          var center = {
+              x: 0,
+              y: 0
+            },
+
+            target = $(e.target),
+
+            targetWidth = parseInt(target.width()),
+            targetHeight = parseInt(target.height()),
+
+            xyrulers = $('.xyruler');
+
+          center.y = parseInt(parseInt($('body').height()) / 2) - parseInt(targetHeight / 2);
+          center.x = parseInt(parseInt($(document).width()) / 2) - parseInt(targetWidth / 2);
+
+          console.log(parseInt(target.parent().parent().css('left')), parseInt(target.parent().parent().css('top')), center);
+
+          if(center.x === parseInt(target.parent().parent().css('left'))) {
+
+            console.log('x =');
+
+            xyrulers.each(function(key, ruler) {
+
+              ruler = $(ruler);
+              if(ruler.hasClass('yruler')) {
+                ruler.show();
+              }
+
+            });
+          }else {
+            // $('.yruler').hide();
+          }
+
+          if(center.y === parseInt(target.parent().parent().css('top'))) {
+
+            console.log('sss');
+
+            xyrulers.each(function(key, ruler) {
+
+              ruler = $(ruler);
+              if(ruler.hasClass('xruler')) {
+                ruler.show();
+              }
+
+            });
+          }else {
+            // $('.xruler').hide();
+          }
 
         }
       });

@@ -77,7 +77,7 @@ jQuery.fn.extend({
 			positionX = $this.position().left;
 			positionY = $this.position().top;
 			if(opt.onMouseDown) {
-				opt.onMouseDown();				
+				opt.onMouseDown(e);				
 			}
 			return false;
 		});
