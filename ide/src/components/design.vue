@@ -149,7 +149,9 @@ export default {
 
     refreshIframe: function() {
       $('.designer').contents().find('body').html(this.editor.getValue());
-      document.getElementById('gospelDesignerArea').contentWindow.initDesigner();
+      var Designer = document.getElementById('gospelDesignerArea').contentWindow.designer;
+
+      Designer.init();
     }
 
   }

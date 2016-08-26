@@ -1,79 +1,106 @@
 (function () {
 
-  var jq = jQuery.noConflict();
+  var jq = jQuery.noConflict(),
 
-  var isLoadedOnce = false;
+      isLoadedOnce = false,
 
-  var util = {
+      util = {
 
-    randomString: function(len) {
-    　len = len || 32;
-    　var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';    /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
-    　var maxPos = $chars.length;
-    　var pwd = '';
-    　for (i = 0; i < len; i++) {
-    　    pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
-    　}
-    　return pwd;
-    },
+        randomString: function(len) {
+        　len = len || 32;
+        　var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';    /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
+        　var maxPos = $chars.length;
+        　var pwd = '';
+        　for (i = 0; i < len; i++) {
+        　    pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+        　}
+        　return pwd;
+        },
 
-    json2css: function(data) {
-      var stringify = JSON.stringify(data);
+        json2css: function(data) {
+          var stringify = JSON.stringify(data);
 
-      stringify = stringify.replace('{', '');
-      stringify = stringify.replace('}', '');
-      stringify = stringify.replace(/,/g, ';');
-      stringify = stringify.replace(/"([^"]*)"/g, '$1');
+          stringify = stringify.replace('{', '');
+          stringify = stringify.replace('}', '');
+          stringify = stringify.replace(/,/g, ';');
+          stringify = stringify.replace(/"([^"]*)"/g, '$1');
 
-      return stringify;
-    }
+          return stringify;
+        }
 
-  }
+      };
 
   document.oncontextmenu = function(){
     // return false;
   };
 
-  var controlsList = [];
+  function Designer(elem) {
+    this.init(elem);
+  }
 
-  window.initDesigner = function() {
+  Designer.fn = Designer.prototype = {
 
-    if(!isLoadedOnce) {
+    controlsList: [],
+
+    $destId: '',
+
+    $dest: [],
+
+    init: function(elem) {
+
+      this.$destId = elem;
+
+      this.$dest = $(this.$destId);
+
+      if(!this.isLoadedOnce()) {
+        this.makeControlsDraggable();
+      }
+
+      if(this.getControlsListLength() !== 0) {
+        var self = this;
+        this.controlsList.forEach(function(val, key) {
+          self.makeElemInDesignerDraggable(val);
+        });
+      }
+
+      this.handleDragEvent();
+    },
+
+    makeControlsDraggable: function() {
 
       $(".cpList", parent.document).find("li").each(function() {  
         var _this = $(this);
 
         _this.on("dragstart", function(ev) {//开始拖拽  
             var dt = ev.dataTransfer;
-            console.log(dt, ev);
             dt.setData('application/elem', ev.target.id);//将拖拽组件ID传入
         });
 
         _this.on('dragend', function(ev) {
-          console.log('end');
           ev.preventDefault();
         });
+
       });
 
-    }
+    },
 
-    var makeElemDraggable = function(myId) {
-      jq('#' + myId).dragging({
-        move: 'both', //拖动方向，x y both
-        randomPosition: false //初始位置是否随机
+    isLoadedOnce: function() {
+      return isLoadedOnce;
+    },
+
+    makeElemInDesignerDraggable: function(id) {
+      jq('#' + id).dragging({
+        move: 'both',
+        randomPosition: false
       });
-    }
+    },
 
-    if(controlsList.length !== 0) {
-      controlsList.forEach(function(val, key) {
-        makeElemDraggable(val);
-      });
-    }
+    getControlsListLength: function() {
+      return this.controlsList.length;
+    },
 
-    var $destId = '.gospel-designer-area';
-    var $dest = $($destId);
+    highlightElem: {
 
-    var elemHighLight = {
       hightlight: function(target) {
         target.addClass('highlight-elem');
       },
@@ -81,9 +108,11 @@
       undoHighlight: function(target) {
         target.removeClass('highlight-elem');
       }
-    };
 
-    var controls = {
+    },
+
+    controls: {
+
       generatorElement: function(elemType, isInput) {
 
         isInput = isInput || false;
@@ -148,62 +177,67 @@
 
         $(container).append('<div id="' + myId + '" class="element-box" style="' + pos + '">\r\n' + elem + '</div>\r\n');
 
-        controlsList.push(myId);
-        makeElemDraggable(myId);
+        Designer.fn.controlsList.push(myId);
+        Designer.fn.makeElemInDesignerDraggable(myId);
 
       }
-    }
 
-    $dest.on('dragenter', function(ev) {
-      var targetEl = $(ev.target);
-      elemHighLight.hightlight(targetEl);
-    });
+    },
 
-    $dest.on('dragleave', function(ev) {
-      var targetEl = $(ev.target);
-      elemHighLight.undoHighlight(targetEl);
-    });
+    handleDragEvent: function() {
 
-    $dest.on('dragover', function(ev) {
-      ev.preventDefault();
-    });
+      var $dest = this.$dest;
+      var self = this;
 
-    $dest.on('drop', function(ev) {
-      ev.preventDefault();
+      console.log($dest);
 
-      console.log('droppp', ev);
-
-      var df = ev.dataTransfer;
-      var elemId = df.getData('application/elem');
-
-      var targetEl = $(ev.target);
-      elemHighLight.undoHighlight(targetEl);
-
-      var ctx = $(this).get(0);
-
-      var isInput = elemId.indexOf('input') === 0 ? true : false;
-      var elemType = elemId.split('_')[1];
-
-      var elemHTML = controls.generatorElement(elemType, isInput);
-      controls.appendElement(ev.target, elemHTML, {
-        clientX: ev.clientX,
-        clientY: ev.layerY
+      $dest.on('dragenter', function(ev) {
+        var targetEl = $(ev.target);
+        self.highlightElem.hightlight(targetEl);
       });
 
-      parent.refreshDesignerCode($('body').html());
+      $dest.on('dragleave', function(ev) {
+        var targetEl = $(ev.target);
+        self.highlightElem.undoHighlight(targetEl);
+      });
 
-      return false;
-    });
+      $dest.on('dragover', function(ev) {
+        ev.preventDefault();
+      });
 
-    $($destId).each(function(key, val) {
-      // console.log(key, val);
-    });
+      $dest.on('drop', function(ev) {
+        ev.preventDefault();
 
-    isLoadedOnce = true;
+        var df = ev.dataTransfer,
+            elemId = df.getData('application/elem'),
+            targetEl = $(ev.target);
 
+        self.highlightElem.undoHighlight(targetEl);
+
+        var ctx = $(this).get(0),
+            isInput = elemId.indexOf('input') === 0 ? true : false,
+            elemType = elemId.split('_')[1],
+            elemHTML = self.controls.generatorElement(elemType, isInput);
+
+        self.controls.appendElement(ev.target, elemHTML, {
+          clientX: ev.clientX,
+          clientY: ev.layerY
+        });
+
+        parent.refreshDesignerCode($('body').html());
+
+        return false;
+      });
+
+      isLoadedOnce = true;
+
+    }
+
+  }
+
+  parent.document.onreadystatechange = function() {
+    window.designer = new Designer('.gospel-designer-area');
   };
-
-  parent.document.onreadystatechange = initDesigner;
 
 })();
 // var Draggable = function(options){

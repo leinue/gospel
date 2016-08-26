@@ -26,8 +26,6 @@ jQuery.fn.extend({
 		}else{
 			hander = $this.find(opt.hander);
 		}
-
-		console.log(hander);
 			
 		//---初始化
 		// father.css({"position":"relative"});
@@ -78,13 +76,13 @@ jQuery.fn.extend({
 			Y = e.pageY;
 			positionX = $this.position().left;
 			positionY = $this.position().top;
+			opt.onMouseDown || opt.onMouseDown();
 			return false;
 		});
 			
 		jQuery(document).mouseup(function(e){
-						console.log(e);
-
 			mDown = false;
+			opt.onMouseUp || opt.onMouseUp(e);
 		});
 			
 		jQuery(document).mousemove(function(e){
@@ -144,6 +142,7 @@ jQuery.fn.extend({
 					$this.css({"top":faHeight-thisHeight});
 				}
 			}
+
 			if(movePosition.toLowerCase() == "x"){
 				thisXMove();
 			}else if(movePosition.toLowerCase() == "y"){
@@ -151,6 +150,8 @@ jQuery.fn.extend({
 			}else if(movePosition.toLowerCase() == 'both'){
 				thisAllMove();
 			}
+
+			opt.onMouseMove || opt.onMouseMove(e, movePosition.toLowerCase, moveX, moveY);
 		});
     }
 }); 
