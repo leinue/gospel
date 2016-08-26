@@ -271,22 +271,18 @@
 
             isElementBoxClicked = target.hasClass('element-box') ? true : false;
 
-          console.log(target);
-
         if(!target.hasClass('controls-bar')) {
           //点击非控件区域，取消显示所有控制器
           self.unActiveAll();
         }
 
-
-
-        if(target.parent().find('.element-box') || isElementBoxClicked) {
-          //点击了某一控件，显示控件控制器
+        if(!target.hasClass('content') || isElementBoxClicked) {
+          //点击了某一控件，置此控件为当前控件
 
           if(!isElementBoxClicked) {
-            target.prev().show();
+            self.activeControl(target.prev().attr('id'));
           }else {
-            target.find('.control-box').show();            
+            self.activeControl(target.find('.control-box').attr('id'));
           }
         }
 
@@ -296,11 +292,20 @@
 
     unActiveAll: function() {
       $('.control-box').hide();
+      this.setCurrentActiveControl('');
     },
 
     activeControl: function(id) {
       $('#' + id).show();
-      this.currentControl = $('#' + id).parent().attr('id');
+      this.setCurrentActiveControl($('#' + id).parent().attr('id'));
+    },
+
+    getCurrentActiveControl: function() {
+      return this.currentControl;
+    },
+
+    setCurrentActiveControl: function(id) {
+      this.currentControl = id;
     }
 
   }
