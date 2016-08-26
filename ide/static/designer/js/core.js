@@ -48,6 +48,10 @@
 
     init: function(elem) {
 
+      if(!elem) {
+        throw 'arguments "elem" can not be omitted in function "designer.init": ' + elem;
+      }
+
       this.$destId = elem;
 
       this.$dest = $(this.$destId);
@@ -91,7 +95,21 @@
     makeElemInDesignerDraggable: function(id) {
       jq('#' + id).dragging({
         move: 'both',
-        randomPosition: false
+        randomPosition: false,
+
+        onMouseUp: function(e) {
+
+        },
+
+        onMouseDown: function(e) {
+
+
+
+        },
+
+        onMouseMove: function(e, direction, moveX, moveY) {
+
+        }
       });
     },
 
@@ -165,17 +183,25 @@
           return false;
         }
 
-        var myId = util.randomString(8);
+        var myId = util.randomString(8),
 
-        var pos = {
-          position: 'absolute',
-          top: pos.clientY + 'px',
-          left: pos.clientX + 'px'
-        };
+            pos = {
+              position: 'absolute',
+              top: pos.clientY + 'px',
+              left: pos.clientX + 'px'
+            },
+
+            controlBoxId = util.randomString(9);
 
         pos = util.json2css(pos);
 
-        $(container).append('<div id="' + myId + '" class="element-box" style="' + pos + '">\r\n' + elem + '</div>\r\n');
+        var ctrlHTML = '<div id="' + myId + '" class="element-box" style="' + pos + '">\r\n<div class="control-box" id="' + controlBoxId + '">' + '<div class="controls-bar"><div class="bar-radius"></div><div class="bar-radius top-left"></div><div class="bar-radius mid-left"></div><div class="bar-radius bottom-left"></div><div class="bar-radius top-right"></div><div class="bar-radius mid-right"></div><div class="bar-radius bottom-right"></div><div class="bar-radius bottom-mid"></div></div>' + '</div>' + elem + '</div>\r\n';
+
+        $(container).append(ctrlHTML);
+
+        $('#' + controlBoxId).css({
+          height: $('#' + myId).height()
+        });
 
         Designer.fn.controlsList.push(myId);
         Designer.fn.makeElemInDesignerDraggable(myId);
@@ -189,7 +215,9 @@
       var $dest = this.$dest;
       var self = this;
 
-      console.log($dest);
+      if($dest.length === 0) {
+        throw 'error in init designer, failed to get container';
+      }
 
       $dest.on('dragenter', function(ev) {
         var targetEl = $(ev.target);
@@ -230,6 +258,28 @@
       });
 
       isLoadedOnce = true;
+
+      jQuery(document).mouseup(function(e) {
+
+        var target = $(e.target);
+
+        if(!target.hasClass('controls-bar')) {
+          self.unActiveAll();
+        }else {
+
+          
+          
+        }
+
+      });
+
+    },
+
+    unActiveAll: function() {
+      $('.controls-bar').hide();
+    },
+
+    activeControl: function(id) {
 
     }
 

@@ -76,13 +76,17 @@ jQuery.fn.extend({
 			Y = e.pageY;
 			positionX = $this.position().left;
 			positionY = $this.position().top;
-			opt.onMouseDown || opt.onMouseDown();
+			if(opt.onMouseDown) {
+				opt.onMouseDown();				
+			}
 			return false;
 		});
 			
 		jQuery(document).mouseup(function(e){
 			mDown = false;
-			opt.onMouseUp || opt.onMouseUp(e);
+			if(opt.onMouseUp) {
+				opt.onMouseUp(e);				
+			}
 		});
 			
 		jQuery(document).mousemove(function(e){
@@ -151,7 +155,10 @@ jQuery.fn.extend({
 				thisAllMove();
 			}
 
-			opt.onMouseMove || opt.onMouseMove(e, movePosition.toLowerCase, moveX, moveY);
+			if(opt.onMouseMove) {
+				opt.onMouseMove(e, movePosition.toLowerCase, moveX, moveY);
+			}
+
 		});
     }
 }); 

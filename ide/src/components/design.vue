@@ -31,7 +31,13 @@ export default {
         id: 'gospelDesignerArea',
         context: '',
         dom: '',
-        codes: '// TO DO'
+        class: 'designer',
+        wrapper: '.designer-wrapper',
+        container: '.gospel-designer-area',
+        src: './static/designer.html',
+        width: '375',
+        height: '667',
+        name: 'gder',
       },
 
       editor: ''
@@ -51,80 +57,7 @@ export default {
 
       //初始化设计器
 
-      var initDesigner = function() {
-        var iframe = document.createElement("iframe");
-        iframe.src = "./static/designer.html";
-        iframe.setAttribute('class', 'designer');
-        iframe.setAttribute('id', self.$get('designer.id'))
-        iframe.setAttribute('width', '375');
-        iframe.setAttribute('height', '667');
-        iframe.setAttribute('name', 'gospelDesignerArea');
-
-        var designerOnload = function() {
-          var designerCode = $('.designer').contents().find('body').html();
-          self.$set('codes', designerCode);
-          self.$set('designer.dom', iframe);
-          self.$set('designer.context', document.getElementById('gospelDesignerArea').contentWindow);
-
-          self.$nextTick(function() {
-
-            //初始化编辑器
-            ace.require("ace/ext/language_tools");
-            var editor = ace.edit("editor");
-            editor.setTheme("ace/theme/twilight");
-            editor.setOptions({
-                enableBasicAutocompletion: true
-            });
-
-            window.refreshDesignerCode = function(codes) {
-              console.log(codes);
-              self.$set('codes', codes);
-              editor.setValue(codes);
-              editor.clearSelection();
-            }
-
-            var HTMLMode = ace.require("ace/mode/html").Mode;
-            var JavaScript = ace.require('ace/mode/javascript').Mode;
-            editor.session.setMode(new HTMLMode());
-
-            var editorBeforeChanged = new Date().getTime();
-
-            editor.getSession().on('change', function(changed) {
-
-              var editorAfterChanged = new Date().getTime();
-
-              if(editorAfterChanged - editorBeforeChanged > 1500) {
-                editorBeforeChanged = editorAfterChanged;
-              }
-
-              // refreshIframe(editor.getValue());
-
-            });
-
-            self.$set('editor', editor);
-
-          });
-
-        }
-
-        if (iframe.attachEvent){
-
-          iframe.attachEvent("onload", function(){
-            designerOnload();
-          });
-
-        } else {
-
-          iframe.onload = function(){
-            designerOnload();
-          };
-
-        }
-
-        $('.designer-wrapper').append(iframe);
-      };
-
-      initDesigner();
+      self.$get('initDesignerWrapper')();
 
     });
 
@@ -142,16 +75,91 @@ export default {
 
   methods: {
 
+    initDesignerWrapper: function() {
+
+      var self = this;
+
+      var iframe = document.createElement("iframe");
+      iframe.src = this.designer.src;
+      iframe.setAttribute('class', this.designer.class);
+      iframe.setAttribute('id', this.designer.id)
+      iframe.setAttribute('width', this.designer.width);
+      iframe.setAttribute('height', this.designer.height);
+      iframe.setAttribute('name', this.designer.name);
+
+      this.designer.context = $('.' + self.designer.class).contents();
+
+      var designerOnload = function() {
+        var designerCode = self.designer.context.find('body').html();
+        self.designer.dom = iframe;
+
+        self.$nextTick(function() {
+
+          //初始化编辑器
+          ace.require("ace/ext/language_tools");
+          self.editor = ace.edit("editor");
+          self.editor.setTheme("ace/theme/twilight");
+          self.editor.setOptions({
+              enableBasicAutocompletion: true
+          });
+
+          window.refreshDesignerCode = this.refreshDesignerCode;
+
+          var HTMLMode = ace.require("ace/mode/html").Mode;
+          var JavaScript = ace.require('ace/mode/javascript').Mode;
+          this.editor.session.setMode(new HTMLMode());
+
+          var editorBeforeChanged = new Date().getTime();
+
+          this.editor.getSession().on('change', function(changed) {
+
+            var editorAfterChanged = new Date().getTime();
+
+            if(editorAfterChanged - editorBeforeChanged > 1500) {
+              editorBeforeChanged = editorAfterChanged;
+            }
+
+          });
+
+        });
+
+      }
+
+      if (iframe.attachEvent){
+
+        iframe.attachEvent("onload", function(){
+          designerOnload();
+        });
+
+      } else {
+
+        iframe.onload = function(){
+          designerOnload();
+        };
+
+      }
+
+      $('.designer-wrapper').append(iframe);
+
+    },
+
     startCoding: function() {
+      this.refreshDesignerCode($('.' + this.designer.class).contents().find('body').html());
       this.editor.focus();
-      this.editor.gotoLine(this.editor.session.getLength());      
+      this.editor.gotoLine(this.editor.session.getLength());
+    },
+
+    refreshDesignerCode: function(codes) {
+      this.codes = codes;
+      this.editor.setValue(codes);
+      this.editor.clearSelection();
     },
 
     refreshIframe: function() {
-      $('.designer').contents().find('body').html(this.editor.getValue());
-      var Designer = document.getElementById('gospelDesignerArea').contentWindow.designer;
+      $('.' + this.designer.class).contents().find('body').html(this.editor.getValue());
+      var Designer = document.getElementById(this.designer.id).contentWindow.designer;
 
-      Designer.init();
+      Designer.init(this.designer.container);
     }
 
   }
