@@ -46,6 +46,8 @@
 
     $dest: [],
 
+    currentControl: '',
+
     init: function(elem) {
 
       if(!elem) {
@@ -203,6 +205,9 @@
           height: $('#' + myId).height()
         });
 
+        Designer.fn.unActiveAll();
+        Designer.fn.activeControl(controlBoxId);
+
         Designer.fn.controlsList.push(myId);
         Designer.fn.makeElemInDesignerDraggable(myId);
 
@@ -259,16 +264,30 @@
 
       isLoadedOnce = true;
 
+
       jQuery(document).mouseup(function(e) {
 
-        var target = $(e.target);
+        var target = $(e.target),
+
+            isElementBoxClicked = target.hasClass('element-box') ? true : false;
+
+          console.log(target);
 
         if(!target.hasClass('controls-bar')) {
+          //点击非控件区域，取消显示所有控制器
           self.unActiveAll();
-        }else {
+        }
 
-          
-          
+
+
+        if(target.parent().find('.element-box') || isElementBoxClicked) {
+          //点击了某一控件，显示控件控制器
+
+          if(!isElementBoxClicked) {
+            target.prev().show();
+          }else {
+            target.find('.control-box').show();            
+          }
         }
 
       });
@@ -276,11 +295,12 @@
     },
 
     unActiveAll: function() {
-      $('.controls-bar').hide();
+      $('.control-box').hide();
     },
 
     activeControl: function(id) {
-
+      $('#' + id).show();
+      this.currentControl = $('#' + id).parent().attr('id');
     }
 
   }
