@@ -83,7 +83,8 @@
 }
 
 .xyruler {
-	/*display: none;*/
+	display: none;
+	z-index: 65535;
 }
 
 .xruler {

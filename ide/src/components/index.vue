@@ -19,7 +19,7 @@
   <forms v-bind:styles="attrStyles" fid="attributes">
     <span slot="title">属性面板</span>
     <div slot="content">
-    ssss
+      <attr-panel></attr-panel>
     </div>
   </forms>
 
@@ -36,6 +36,7 @@
 
 import controlsPanel from './controls.vue';
 import designPanel from './design.vue';
+import attrPanel from './attr.vue';
 import store from '../vuex.js';
 import forms from './forms/form.vue';
 
@@ -83,7 +84,8 @@ export default {
   components: {
     controlsPanel,
     designPanel,
-    forms
+    forms,
+    attrPanel
   },
 
   methods: {

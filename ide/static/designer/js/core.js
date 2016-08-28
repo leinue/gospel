@@ -40,6 +40,8 @@
 
   Designer.fn = Designer.prototype = {
 
+    constructor:  Designer,
+
     controlsList: [],
 
     $destId: '',
@@ -47,6 +49,38 @@
     $dest: [],
 
     currentControl: '',
+
+    domHeight: parseInt($('body').height()),
+    domWidth: parseInt($(document).width()),
+
+    grid: {
+
+      x: [],
+      y: [],
+
+      center: {
+        top: function(targetHeight) {
+          var domHeight = parseInt($('body').height());
+          return parseInt((domHeight - parseInt(targetHeight)) / 2);
+        },
+        left: function(targetWidth) {
+          var domWidth = parseInt($(document).width());
+          return parseInt((domWidth - parseInt(targetWidth)) / 2);
+        }
+      },
+
+      width: 10,
+      height: 10,
+
+      xLength: function() {
+        return parseInt(Designer.fn.domWidth / this.width);
+      },
+
+      yLength: function() {
+        return parseInt($('body').height() / this.height);
+      }
+
+    },
 
     init: function(elem) {
 
@@ -61,6 +95,8 @@
       if(!this.isLoadedOnce()) {
         this.makeControlsDraggable();
       }
+
+      this.generatorGrid();
 
       if(this.getControlsListLength() !== 0) {
         var self = this;
@@ -94,6 +130,34 @@
       return isLoadedOnce;
     },
 
+    generatorGrid: function() {
+
+      //x
+      for (var i = 0; i < this.grid.xLength(); i++) {
+        var x = i;
+        if(x === 0) {
+          continue;
+        }
+        x *= this.grid.width;
+        this.grid.x.push(x);
+      };
+
+      //y
+      for (var i = 0; i < this.grid.yLength(); i++) {
+        var y = i;
+        if(y === 0) {
+          continue;
+        }
+        y *= this.grid.height;
+        this.grid.y.push(y);
+      }
+
+    },
+
+    getGrid: function() {
+      return this.grid;
+    },
+
     makeElemInDesignerDraggable: function(id) {
 
       var isControlMouseDown = false,
@@ -101,7 +165,9 @@
 
           isTargetToControl = function(target) {
             return !$(target).hasClass('content');
-          };
+          },
+
+          xyrulers = $('.xyruler');
 
       jq('#' + id).dragging({
         move: 'both',
@@ -115,7 +181,7 @@
 
           isControlMouseDown = false;
           isControlDragged = false;
-          // $('.xyruler').hide();
+          $('.xyruler').hide();
         },
 
         onMouseDown: function(e) {
@@ -134,60 +200,74 @@
           }
 
           if(!isControlMouseDown) {
-            console.log('isControlMouseDown false');
             return false;
           }
 
           isControlDragged = true;
 
-          var center = {
-              x: 0,
-              y: 0
-            },
+          var 
 
             target = $(e.target),
 
-            targetWidth = parseInt(target.width()),
-            targetHeight = parseInt(target.height()),
+            targetWidth = parseInt(target.parent().width()),
+            targetHeight = parseInt(target.parent().height());
 
-            xyrulers = $('.xyruler');
+          var centerX = Designer.fn.grid.center.left(targetWidth),
+              centerY = Designer.fn.grid.center.top(targetHeight);
 
-          center.y = parseInt(parseInt($('body').height()) / 2) - parseInt(targetHeight / 2);
-          center.x = parseInt(parseInt($(document).width()) / 2) - parseInt(targetWidth / 2);
+          Designer.fn.grid.x.push(centerX);
 
-          console.log(parseInt(target.parent().parent().css('left')), parseInt(target.parent().parent().css('top')), center);
+          if(Designer.fn.grid.x.indexOf(moveX) != -1) {
 
-          if(center.x === parseInt(target.parent().parent().css('left'))) {
+            var left = moveX, lmt = centerX;
 
-            console.log('x =');
+            if(left > lmt) {
+              left = left + targetWidth;
+            }
 
-            xyrulers.each(function(key, ruler) {
-
-              ruler = $(ruler);
-              if(ruler.hasClass('yruler')) {
-                ruler.show();
-              }
-
+            $('.yruler').show().css({
+              left: left + 'px'
             });
+
+            if(moveX === lmt) {
+              $('.yruler').css({
+                left: '50%'
+              });
+            }
+
           }else {
-            // $('.yruler').hide();
+            $('.yruler').hide();
           }
 
-          if(center.y === parseInt(target.parent().parent().css('top'))) {
+          Designer.fn.grid.x.pop();
 
-            console.log('sss');
+          Designer.fn.grid.y.push(centerY);
 
-            xyrulers.each(function(key, ruler) {
+          if(Designer.fn.grid.y.indexOf(moveY) != -1) {
 
-              ruler = $(ruler);
-              if(ruler.hasClass('xruler')) {
-                ruler.show();
-              }
+            var top = moveY, domHeight = parseInt($('body').height()),
+                lmt = centerY;
 
+            if(top > lmt) {
+              top = top + targetHeight;
+            }
+
+            $('.xruler').show().css({
+              top: top + 'px'
             });
+
+            if(moveY === lmt) {
+              $('.xruler').css({
+                top: '50%'
+              });
+            }
+
           }else {
-            // $('.xruler').hide();
+            $('.xruler').hide();
           }
+
+          Designer.fn.grid.y.pop();
+
 
         }
       });

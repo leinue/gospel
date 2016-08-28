@@ -4,6 +4,10 @@
       <ui-tab header="设计" @selected="refreshIframe()">
 
         <div class="designer-wrapper">
+          <div class="loader">
+            <ui-progress-circular :show="loading" color="multi-color">
+            </ui-progress-circular>
+          </div>
         </div>
 
       </ui-tab>
@@ -40,7 +44,9 @@ export default {
         name: 'gder',
       },
 
-      editor: ''
+      editor: '',
+
+      loading: true,
     }
   },
 
@@ -90,6 +96,8 @@ export default {
       this.designer.context = $('.' + self.designer.class).contents();
 
       var designerOnload = function() {
+        self.loading = false;
+        $('.loader').hide();
         var designerCode = self.designer.context.find('body').html();
         self.designer.dom = iframe;
 
@@ -200,6 +208,14 @@ export default {
     box-shadow: 0 1px 6px rgba(0,0,0,.33);
     background: rgb(255, 255, 255);
     line-height: 50%;
+  }
+
+  .loader {
+    position: absolute;
+    top: 50%;
+    width: 100px;
+    height: 100px;
+    left: 50%;
   }
   
 </style>

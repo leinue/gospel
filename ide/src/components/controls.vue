@@ -13,7 +13,7 @@
           </li>
           <li id="grid_padded" title="文本输入框" class="component">  
               <div class="cpIcon"></div>  
-              <p>内边距</p>  
+              <p>内边距</p>
           </li>
       </ul>
 
@@ -32,7 +32,7 @@
               <div class="cpIcon"></div>  
               <p>文本输入框</p>  
           </li>  
-          <li id="output_label" title="文本"  class="component">  
+          <li id="output_label" title="文本"  class="component">
               <div class="cpIcon"></div>  
               <p>文本</p>  
           </li>

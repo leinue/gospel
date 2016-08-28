@@ -4,8 +4,8 @@
     <header>
       <div class="group photo-cover photo-2">
         <ui-toolbar
-            type="colored"
-            text-color="white"
+            type="default"
+            text-color="black"
             brand="Gospel"
             title="Web可视化集成编程环境" 
             show-brand 
@@ -13,11 +13,11 @@
             preloader-top
             :hide-nav-icon="true"
             @nav-icon-clicked="setLoading"
-            >
+        >
             <div slot="brand">
               <div class="ui-toolbar-title">
                 <ui-icon-button
-                    type="clear" color="white" icon="menu"
+                    type="clear" color="black" icon="menu"
                     v-el:trigger-b
                 ></ui-icon-button>
                 <span style="top: 14px;position: fixed;">Gospel</span>
@@ -27,26 +27,26 @@
             <div slot="actions">
 
                 <ui-icon-button
-                    type="clear" color="white" icon="play_circle_outline" v-el:debug
+                    type="clear" color="black" icon="play_circle_outline" v-el:debug
                 ></ui-icon-button>
 
                 <ui-tooltip :trigger="$els.debug" content="启动调试"></ui-tooltip>
 
                 <ui-icon-button
-                    type="clear" color="white" icon="stop_circle_outline" v-el:stop-debug
+                    type="clear" color="black" icon="stop_circle_outline" v-el:stop-debug
                 ></ui-icon-button>
 
                 <ui-tooltip :trigger="$els.stopDebug" content="停止调试"></ui-tooltip>
 
                 <ui-icon-button
-                    type="clear" color="white" icon="view_modules" has-dropdown-menu :show-menu-secondary-text="true"
+                    type="clear" color="black" icon="view_modules" has-dropdown-menu :show-menu-secondary-text="true"
                     :menu-options="formMenu" dropdown-position="bottom right" v-el:forms
                 ></ui-icon-button>
 
                 <ui-tooltip :trigger="$els.forms" content="窗口"></ui-tooltip>
 
                 <ui-icon-button
-                    type="clear" color="white" icon="more_vert" has-dropdown-menu
+                    type="clear" color="black" icon="more_vert" has-dropdown-menu
                     :menu-options="menu" dropdown-position="bottom right"
                 ></ui-icon-button>
             </div>
