@@ -29,7 +29,7 @@ export default {
   data () {
     return {
 
-      codes: '// TO DO  ',
+      codes: '// TO DO',
 
       designer: {
         id: 'gospelDesignerArea',
