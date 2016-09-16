@@ -2,7 +2,7 @@ module.exports = {
 
 	getOne: function() {
 
-		return this.pg
+		return this.pg;
 
 	}
 

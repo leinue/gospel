@@ -2,7 +2,7 @@ var controllers = require('./controllers/index.js')();
 
 module.exports = function(router) {
 
-	router.post('*', function *(next) {
+	router.get('*', function *(next) {
 		console.log('ssss');
 		yield next;
 	})
